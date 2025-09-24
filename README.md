@@ -1,19 +1,34 @@
 # HBnB Evolution - Airbnb Clone Project
 
 ## Objective
-HBnB Evolution is a simplified Airbnb-like application designed to demonstrate modern web application architecture patterns. The project serves as a comprehensive learning platform for implementing layered architecture, business logic modeling, and API design while providing core vacation rental management functionality.
+HBnB Evolution is an educational project that implements a simplified Airbnb-like platform to demonstrate:
+- Modern web application architecture patterns
+- Layered architecture implementation  
+- Business logic modeling best practices
+- API design and development
+- Database-agnostic persistence layer design
 
 ## Key Functionalities
-- **User Management**: User registration, profile updates, and role-based access (regular users vs administrators)
-- **Property Listings**: Create, update, and manage property listings with detailed descriptions, pricing, and location data
-- **Review System**: Users can leave ratings and comments for properties they've visited
-- **Amenity Management**: Comprehensive amenity catalog that can be associated with property listings
-- **Audit Trail**: Automatic tracking of creation and modification timestamps for all entities
+- **User Management**: Registration, profile updates, role-based access (users vs administrators)
+- **Property Listings**: Create, update, manage listings with descriptions, pricing, and geolocation
+- **Review System**: Rating and comment system for visited properties
+- **Amenity Management**: Catalog system for property amenities with many-to-many relationships
+- **Audit Trail**: Automatic creation/update timestamp tracking for all entities
 
-## Design
-The application follows a strict three-layer architecture pattern:
+## Technology Stack
+- **Backend**: Python
+- **Architecture**: 3-Layer Pattern
+- **API**: RESTful Design
+- **Identification**: UUID-based entity tracking
+- **Database**: Database-agnostic design
 
-### Architecture Layers
-1. **Presentation Layer**: RESTful API endpoints handling client requests and responses
-2. **Business Logic Layer**: Core application models (User, Place, Review, Amenity) and business rules enforcement
-3. **Persistence Layer**: Database abstraction and data storage operations
+## Project Status
+**Phase 1**: Technical Documentation (Current)
+-  High-Level Package Diagram ✅
+-  Detailed Class Diagram for Business Logic Layer
+-  Sequence Diagrams for API Calls
+-  Documentation Compilation
+
+## Design Architecture
+
+### Three-Layer Pattern
