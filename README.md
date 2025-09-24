@@ -17,15 +17,3 @@ The application follows a strict three-layer architecture pattern:
 1. **Presentation Layer**: RESTful API endpoints handling client requests and responses
 2. **Business Logic Layer**: Core application models (User, Place, Review, Amenity) and business rules enforcement
 3. **Persistence Layer**: Database abstraction and data storage operations
-
-### Core Entities
-- **User**: First name, last name, email, password, admin status
-- **Place**: Title, description, price, geolocation (latitude/longitude), owner association
-- **Review**: Rating, comment, with relationships to both User and Place
-- **Amenity**: Name and description, with many-to-many relationship to Places
-
-### Technical Implementation
-- **Unique Identification**: All entities feature UUID-based unique identifiers
-- **Facade Pattern**: Inter-layer communication through simplified interfaces
-- **UML Compliance**: Complete documentation using standardized UML notation
-- **Database Agnostic**: Persistence layer designed for easy database implementation
