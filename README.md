@@ -23,28 +23,34 @@ HBnB Evolution is an educational project that implements a simplified Airbnb-lik
 
 ---
 
-## Technology Stack
-- **Backend**: Python
-- **Architecture**: 3-Layer Pattern
-- **API**: RESTful Design
-- **Identification**: UUID-based entity tracking
-- **Database**: Database-agnostic design
+## Design Architecture
+
+### Package Diagram
+![Package Diagram](./images/package_diagram.jpg)
+
+---
+
+## Architecture Overview
+
+### Three-Layer Architecture
+
+**Presentation Layer**
+- Provides the user interface and API contracts. It receives external requests, translates them into commands for the business layer, and returns formatted responses.
+
+**Business Logic Layer**
+- The core of the application. It enforces business rules, processes data, and coordinates tasks. It is independent of any specific user interface or database technology.
+
+**Persistence Layer**
+- Handles all data storage and retrieval. It translates application objects into database records and vice versa, insulating the business logic from database-specific details.
 
 ---
 
 ## Project Status
 **Phase 1**: Technical Documentation (Current)
--  High-Level Package Diagram ✅
--  Detailed Class Diagram for Business Logic Layer
--  Sequence Diagrams for API Calls
--  Documentation Compilation
-
----
-
-## Design Architecture
-
-### Package Diagram
-![Logo](./images/package_diagram.jpg)
+- High-Level Package Diagram ✅
+- Detailed Class Diagram for Business Logic Layer ✅
+- Sequence Diagrams for API Calls
+- Documentation Compilation
 
 ---
 
