@@ -26,7 +26,7 @@ HBnB Evolution is an educational project that implements a simplified Airbnb-lik
 ## Design Architecture
 
 ### Package Diagram
-![Package Diagram](./images/high_level_package_diagram.jpg)
+![High Level Package Diagram](./images/hl_package_diagram.jpg)
 
 ### Business Logic Class Diagram
 ![Business Logic Class Diagram](./images/business_logic_class_diagram.jpg)
