@@ -75,6 +75,28 @@ HBnB Evolution is an educational project that implements a simplified Airbnb-lik
 ### User Registration Flow
 ![User Registration Flow](./images/user_creation_flow.png)
 
+### User Creation Flow
+![User Creation Flow](./images/user_creation_flow.png)
+
+## Key Notes for User Creation Flow
+
+### Client
+- Initiates review creation request.
+
+### Presentation Layer (API Service)
+- Receives client request.
+- Coordinates validation and response formatting.
+
+### Business Logic Layer (Review Controller/Model)
+- Validates user, place, rating, and comment.
+- Creates review instance.
+- Delegates persistence to the database layer.
+
+### Persistence Layer (Database)
+- Fetches user and place objects.
+- Saves the review instance.
+- Reports success or failure.
+
 ### Place Creation Flow
 ![Place Creation Flow](./images/place_creation_flow.png)
 
@@ -83,7 +105,7 @@ HBnB Evolution is an educational project that implements a simplified Airbnb-lik
 
 ### Fetching Places Flow
 ![Fetching Places Flow](./images/fetching_places_flow.png)
-### Key Notes
+### Key Notes for Fetching Places Flow
 
 - **Input Validation First:**  
   The API validates filters before querying the database.
