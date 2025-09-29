@@ -83,7 +83,24 @@ HBnB Evolution is an educational project that implements a simplified Airbnb-lik
 
 ### Fetching Places Flow
 ![Fetching Places Flow](./images/fetching_places_flow.png)
+### Key Notes
 
+- **Input Validation First:**  
+  The API validates filters before querying the database.
+
+- **Error Handling:**  
+  Distinguishes clearly between client errors (`400`) and server errors (`500`).
+
+- **Multiple Outcomes:**  
+  - Invalid request → `400 Bad Request`  
+  - Valid but no data → `200 OK` with empty list  
+  - Database error → `500 Internal Server Error`  
+  - Success with data → `200 OK` with results
+
+- **Layered Responsibility:**  
+  - **Presentation Layer:** Handles validation, formatting, and error messages.  
+  - **Business Logic Layer:** Manages core processing and orchestration.  
+  - **Persistence Layer:** Performs raw data retrieval and storage.
 ---
 
 ## License
