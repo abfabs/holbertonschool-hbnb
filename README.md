@@ -71,29 +71,40 @@ HBnB Evolution is an educational project that implements a simplified Airbnb-lik
 ---
 
 ## API Sequence Diagrams
+---
+### User Registration Flow
+![User Registration Flow](./images/user_creation_flow.png)
+### Key Notes for User Registration Flow
+---
+### Sequence Summary
 
-### User Creation Flow
-![User Creation Flow](./images/user_creation_flow.png)
-### Key Notes for User Creation Flow
+1. **Client → API Service**  
+   `POST /users/register {username, email, password}`  
 
-- **Client**
-   Initiates review creation request.
+2. **Validation (API Service)**  
+   - Invalid/missing fields → **400 Bad Request**  
+   - Valid → continue  
 
-- **Presentation Layer (API Service)**
-  - Receives client request.
-  - Coordinates validation and response formatting.
+3. **Check User (Business Logic → DB)**  
+   - Exists → **409 Conflict (User/email exists)**  
+   - Not exists → continue  
 
-- **Business Logic Layer (Review Controller/Model)**
-  - Validates user, place, rating, and comment.
-  - Creates review instance.
-  - Delegates persistence to the database layer.
+4. **Create User (Business Logic)**  
+   - Hash password  
+   - Create user instance  
+   - Save to DB  
 
-- **Persistence Layer (Database)**
-  - Fetches user and place objects.
-  - Saves the review instance.
-  - Reports success or failure.
+5. **Save Result (DB)**  
+   - Error → **500 Internal Server Error**  
+   - Success → **201 Created + user details**  
 
-  ---
+### Code Legend
+- **400** → Bad input  
+- **409** → Duplicate user  
+- **500** → DB error  
+- **201** → User created  
+- Password is always **hashed** before saving
+---
 
 ### Place Creation Flow
 ![Place Creation Flow](./images/place_creation_flow.png)
