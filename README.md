@@ -76,7 +76,7 @@ HBnB Evolution is an educational project that implements a simplified Airbnb-lik
 ![User Registration Flow](./images/user_creation_flow.png)
 
 ### Place Creation Flow
-![Place Creation Flow](./images/place_creation_flow.jpg)
+![Place Creation Flow](./images/place_creation_flow.png)
 
 ### Review Submission Flow
 ![Review Submission Flow](./images/to_be_added_review_submission_flow.png)
