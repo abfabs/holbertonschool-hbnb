@@ -84,7 +84,7 @@ HBnB Evolution is an educational project that implements a simplified Airbnb-lik
   - Receives client request.
   - Coordinates validation and response formatting.
 
-- ** Business Logic Layer (Review Controller/Model)**
+- **Business Logic Layer (Review Controller/Model)**
   - Validates user, place, rating, and comment.
   - Creates review instance.
   - Delegates persistence to the database layer.
