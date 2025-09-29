@@ -99,6 +99,29 @@ HBnB Evolution is an educational project that implements a simplified Airbnb-lik
 
 ### Place Creation Flow
 ![Place Creation Flow](./images/place_creation_flow.png)
+## Keynotes For Place Creation Flow
+
+### Client Request
+- The client sends a `POST /places` request with authentication token and place data.
+
+### Authentication
+- Token is verified by the **Auth Service**.
+- If invalid/expired → **401 Unauthorized**.
+
+### Validation
+- Place data is checked.
+- If invalid → **400 Bad Request**.
+
+### Authorization
+- User permissions are checked.
+- If unauthorized → **403 Forbidden**.
+
+### Place Creation
+- A new place instance is created and sent to the database.
+- If database error → **500 Internal Server Error**.
+
+### Response
+- On success, return **201 Created** with place details.
 
 ### Review Submission Flow
 ![Review Submission Flow](./images/to_be_added_review_submission_flow.png)
