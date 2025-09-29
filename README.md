@@ -71,11 +71,11 @@ HBnB Evolution is an educational project that implements a simplified Airbnb-lik
 ---
 
 ## API Sequence Diagrams
----
+
 ### User Registration Flow
 ![User Registration Flow](./images/user_creation_flow.png)
 ### Key Notes for User Registration Flow
----
+
 ### Sequence Summary
 
 1. **Client → API Service**  
@@ -104,7 +104,6 @@ HBnB Evolution is an educational project that implements a simplified Airbnb-lik
 - **500** → DB error  
 - **201** → User created  
 - Password is always **hashed** before saving
----
 
 ### Place Creation Flow
 ![Place Creation Flow](./images/place_creation_flow.png)
