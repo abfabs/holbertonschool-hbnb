@@ -153,7 +153,7 @@ HBnB Evolution is an educational project that implements a simplified Airbnb-lik
 - **Response**  
   - On success → returns **201 Created** with the review details.
 
-  
+
 ### Fetching Places Flow
 ![Fetching Places Flow](./images/fetching_places_flow.png)
 ### Key Notes for Fetching Places Flow
