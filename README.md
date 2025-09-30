@@ -132,7 +132,7 @@ HBnB Evolution is an educational project that implements a simplified Airbnb-lik
 - On success, return **201 Created** with place details.
 
 ### Review Submission Flow
-![Review Submission Flow](./images/review%20submission.jpg)
+![Review Submission Flow](./images/review%20flow.png)
 ### Key Notes for Review Submission Flow 
 
 - **Validation**  
