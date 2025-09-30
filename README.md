@@ -132,9 +132,28 @@ HBnB Evolution is an educational project that implements a simplified Airbnb-lik
 - On success, return **201 Created** with place details.
 
 ### Review Submission Flow
-![Review Submission Flow](./images/review_flow_720.png)
-.png)
+![Review Submission Flow](images/Review-Submission-Flow.png)
+### Key Notes for Review Submission Flow 
 
+- **Validation**  
+  - Checks if both **User** and **Place** exist before creating a review.  
+  - If either is missing → returns **404 Not Found**.
+
+- **Input Checking**  
+  - Validates `rating` and `comment` fields.  
+  - If invalid → returns **400 Bad Request**.
+
+- **Review Creation**  
+  - If user/place exist and inputs are valid → a new review instance is created.
+
+- **Persistence Layer**  
+  - Saves the review into the database.  
+  - If a database error occurs → returns **500 Internal Server Error**.
+
+- **Response**  
+  - On success → returns **201 Created** with the review details.
+
+  
 ### Fetching Places Flow
 ![Fetching Places Flow](./images/fetching_places_flow.png)
 ### Key Notes for Fetching Places Flow
