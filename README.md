@@ -1,6 +1,6 @@
 ![Logo](./images/hbnb_logo.jpg)
 
-# HBnB Evolution - Airbnb Clone Project
+<h1 align="center">HBnB Evolution - Airbnb Clone Project</h1>
 
 ## Table of Contents
 - [Objective](#objective)
@@ -17,7 +17,7 @@
 
 ---
 
-## Objective
+<h2 align="center">Objective</h2>
 
 HBnB Evolution is an educational project that brings to life a simplified Airbnb-like platform. Users can register and manage their accounts, create and explore property listings with amenities, and submit reviews. 
 
@@ -33,7 +33,7 @@ It highlights clear separation of concerns, audit tracking, and maintainable, sc
 
 ---
 
-## Key Functionalities
+<h2 align="center">Key Functionalities</h2>
 
 - **User Management**: Registration, profile updates, role-based access (users vs administrators)
 - **Property Listings**: Create, update, manage listings with descriptions, pricing, and geolocation
@@ -43,7 +43,7 @@ It highlights clear separation of concerns, audit tracking, and maintainable, sc
 
 ---
 
-## Package Diagram
+<h2 align="center">Package Diagram</h2>
 
 ![High Level Package Diagram](./images/hl_package_diagram.jpg)
 
@@ -60,7 +60,7 @@ It highlights clear separation of concerns, audit tracking, and maintainable, sc
 
 ---
 
-## Business Logic Diagram
+<h2 align="center">Business Logic Diagram</h2>
 
 ![Business Logic Class Diagram](./images/business_logic_class_diagram.jpg)
 
@@ -88,7 +88,7 @@ It highlights clear separation of concerns, audit tracking, and maintainable, sc
 
 ---
 
-## API Sequence Diagrams
+<h2 align="center">API Sequence Diagrams</h2>
 
 ### User Registration Flow
 ![User Registration Flow](./images/user_creation_flow.png)
@@ -207,17 +207,17 @@ It highlights clear separation of concerns, audit tracking, and maintainable, sc
 
 ---
 
-## License
+<h2 align="center">License</h2>
 
 This project is for educational purposes only and is part of the **Holberton School** / **Foundations of Computer Science** curriculum.
 
 ---
 
-## Authors
+<h2 align="center">Authors</h2>
 
 <p>
   <strong>Alba Eftimi</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <strong>Sokol Gjeka</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <strong>Sokol Gjeka</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   <strong>Renis Vukaj</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   <strong>Kevin Voka</strong>
 
