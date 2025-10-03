@@ -2,16 +2,34 @@
 
 # HBnB Evolution - Airbnb Clone Project
 
+## Table of Contents
+- [Objective](#objective)
+- [Key Functionalities](#key-functionalities)
+- [Package Diagram](#package-diagram)
+- [Business Logic Diagram](#business-logic-diagram)
+- [API Sequence Diagrams](#api-sequence-diagrams)
+  - [User Registration Flow](#user-registration-flow)
+  - [Place Creation Flow](#place-creation-flow)
+  - [Review Submission Flow](#review-submission-flow)
+  - [Fetching Places Flow](#fetching-places-flow)
+- [License](#license)
+- [Authors](#authors)
+
 ---
 
 ## Objective
 
-HBnB Evolution is an educational project that implements a simplified Airbnb-like platform to demonstrate:
-- Modern web application architecture patterns
-- Layered architecture implementation  
-- Business logic modeling best practices
-- API design and development
-- Database-agnostic persistence layer design
+HBnB Evolution is an educational project that brings to life a simplified Airbnb-like platform. Users can register and manage their accounts, create and explore property listings with amenities, and submit reviews. 
+
+The project is designed to showcase:
+
+- Modern web application architecture patterns  
+- Layered architecture (Presentation/API, Business Logic, Persistence)  
+- Best practices in modeling business logic  
+- API design and development  
+- A flexible persistence layer that can work with different databases  
+
+It highlights clear separation of concerns, audit tracking, and maintainable, scalable code, while giving hands-on experience in building a full-stack web application.
 
 ---
 
@@ -74,10 +92,8 @@ HBnB Evolution is an educational project that implements a simplified Airbnb-lik
 
 ### User Registration Flow
 ![User Registration Flow](./images/user_creation_flow.png)
-### Key Notes for User Registration Flow
 
-### Sequence Summary
-
+#### User Registration Summary
 1. **Client → API Service**  
    `POST /users/register {username, email, password}`  
 
@@ -98,82 +114,97 @@ HBnB Evolution is an educational project that implements a simplified Airbnb-lik
    - Error → **500 Internal Server Error**  
    - Success → **201 Created + user details**  
 
-### Code Legend
+#### User Registration Code Legend
 - **400** → Bad input  
 - **409** → Duplicate user  
 - **500** → DB error  
 - **201** → User created  
-- Password is always **hashed** before saving
+- Password is always **hashed** before saving  
 
 ### Place Creation Flow
 ![Place Creation Flow](./images/place_creation_flow.png)
-## Keynotes For Place Creation Flow
 
-### Client Request
-- The client sends a `POST /places` request with authentication token and place data.
+#### Place Creation Summary
+1. **Client Request**  
+   `POST /places` with authentication token and place data  
 
-### Authentication
-- Token is verified by the **Auth Service**.
-- If invalid/expired → **401 Unauthorized**.
+2. **Authentication**  
+   - Token verified by **Auth Service**  
+   - Invalid/expired → **401 Unauthorized**  
 
-### Validation
-- Place data is checked.
-- If invalid → **400 Bad Request**.
+3. **Validation**  
+   - Place data checked  
+   - Invalid → **400 Bad Request**  
 
-### Authorization
-- User permissions are checked.
-- If unauthorized → **403 Forbidden**.
+4. **Authorization**  
+   - User permissions verified  
+   - Unauthorized → **403 Forbidden**  
 
-### Place Creation
-- A new place instance is created and sent to the database.
-- If database error → **500 Internal Server Error**.
+5. **Place Creation**  
+   - Instance created and persisted  
+   - DB error → **500 Internal Server Error**  
 
-### Response
-- On success, return **201 Created** with place details.
+6. **Response**  
+   - Success → **201 Created** with place details  
+
+#### Place Creation Code Legend
+- **400** → Bad input  
+- **401** → Unauthorized  
+- **403** → Forbidden  
+- **500** → DB error  
+- **201** → Place created  
 
 ### Review Submission Flow
 ![Review Submission Flow](./images/review%20flow.png)
-### Key Notes for Review Submission Flow 
 
-- **Validation**  
-  - Checks if both **User** and **Place** exist before creating a review.  
-  - If either is missing → returns **404 Not Found**.
+#### Review Submission Summary
+1. **Validation**  
+   - Check if **User** and **Place** exist  
+   - If missing → **404 Not Found**  
 
-- **Input Checking**  
-  - Validates `rating` and `comment` fields.  
-  - If invalid → returns **400 Bad Request**.
+2. **Input Checking**  
+   - Validate `rating` and `comment` fields  
+   - Invalid → **400 Bad Request**  
 
-- **Review Creation**  
-  - If user/place exist and inputs are valid → a new review instance is created.
+3. **Review Creation**  
+   - New review instance created  
 
-- **Persistence Layer**  
-  - Saves the review into the database.  
-  - If a database error occurs → returns **500 Internal Server Error**.
+4. **Persistence Layer**  
+   - Saves to database  
+   - Error → **500 Internal Server Error**  
 
-- **Response**  
-  - On success → returns **201 Created** with the review details.
+5. **Response**  
+   - Success → **201 Created** with review details  
 
+#### Review Submission Code Legend
+- **400** → Bad input  
+- **404** → User or Place not found  
+- **500** → DB error  
+- **201** → Review created  
 
 ### Fetching Places Flow
 ![Fetching Places Flow](./images/fetching_places_flow.png)
-### Key Notes for Fetching Places Flow
 
-- **Input Validation First:**  
-  The API validates filters before querying the database.
+#### Fetching Places Summary
+1. **Input Validation**  
+   - Filters checked before querying DB  
 
-- **Error Handling:**  
-  Distinguishes clearly between client errors (`400`) and server errors (`500`).
+2. **Error Handling**  
+   - Invalid → **400 Bad Request**  
+   - No data → **200 OK** with empty list  
+   - DB error → **500 Internal Server Error**  
+   - Success → **200 OK** with results  
 
-- **Multiple Outcomes:**  
-  - Invalid request → `400 Bad Request`  
-  - Valid but no data → `200 OK` with empty list  
-  - Database error → `500 Internal Server Error`  
-  - Success with data → `200 OK` with results
+3. **Layered Responsibility**  
+   - **Presentation Layer:** Validation, formatting, error messages  
+   - **Business Logic Layer:** Processing and orchestration  
+   - **Persistence Layer:** Raw data retrieval/storage  
 
-- **Layered Responsibility:**  
-  - **Presentation Layer:** Handles validation, formatting, and error messages.  
-  - **Business Logic Layer:** Manages core processing and orchestration.  
-  - **Persistence Layer:** Performs raw data retrieval and storage.
+#### Fetching Places Code Legend
+- **400** → Bad input  
+- **500** → DB error  
+- **200** → OK (with results or empty list)  
+
 ---
 
 ## License
@@ -187,11 +218,11 @@ This project is for educational purposes only and is part of the **Holberton Sch
 <p>
   <strong>Alba Eftimi</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   <strong>Sokol Gjeka</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <strong>Renis Vukaj</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <strong>Renis Vukaj</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   <strong>Kevin Voka</strong>
 
   GitHub: <a href="https://github.com/abfabs">abfabs</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  GitHub: <a href="https://github.com/sokolgj19">sokolgj19</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  GitHub: <a href="https://github.com/sokolgj19">sokolgj19</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   GitHub: <a href="https://github.com/renisv">renisv</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   GitHub: <a href="https://github.com/kevin10v">kevin10v</a>
 </p>
