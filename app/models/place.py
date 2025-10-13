@@ -1,6 +1,8 @@
 from app.models.base_model import BaseModel
 
+
 class Place(BaseModel):
+    # Initialize a new place with validated attributes and empty review and amenity lists
     def __init__(self, title, description, price, latitude, longitude, owner):
         super().__init__()
         self.title = self.validate_title(title)
@@ -12,6 +14,8 @@ class Place(BaseModel):
         self.reviews = []  # List to store related reviews
         self.amenities = []  # List to store related amenities
 
+
+    # Validate that the title is a non-empty string within length limits
     def validate_title(self, title):
         """Validate title: required, max 100 characters"""
         if not title or not isinstance(title, str):
@@ -20,6 +24,8 @@ class Place(BaseModel):
             raise ValueError("Title must not exceed 100 characters")
         return title
 
+
+    # Validate that the price is a positive number
     def validate_price(self, price):
         """Validate price: must be positive"""
         if not isinstance(price, (int, float)):
@@ -28,6 +34,8 @@ class Place(BaseModel):
             raise ValueError("Price must be a positive value")
         return float(price)
 
+
+    # Validate that the latitude is a number within valid geographic range
     def validate_latitude(self, latitude):
         """Validate latitude: must be between -90.0 and 90.0"""
         if not isinstance(latitude, (int, float)):
@@ -36,6 +44,8 @@ class Place(BaseModel):
             raise ValueError("Latitude must be between -90.0 and 90.0")
         return float(latitude)
 
+
+    # Validate that the longitude is a number within valid geographic range
     def validate_longitude(self, longitude):
         """Validate longitude: must be between -180.0 and 180.0"""
         if not isinstance(longitude, (int, float)):
@@ -44,6 +54,8 @@ class Place(BaseModel):
             raise ValueError("Longitude must be between -180.0 and 180.0")
         return float(longitude)
 
+
+    # Validate that the owner is a valid User instance
     def validate_owner(self, owner):
         """Validate owner: must be a User instance"""
         from app.models.user import User
@@ -51,10 +63,14 @@ class Place(BaseModel):
             raise ValueError("Owner must be a valid User instance")
         return owner
 
+
+    # Add a review to the place's list of reviews
     def add_review(self, review):
         """Add a review to the place"""
         self.reviews.append(review)
 
+
+    # Add an amenity to the place if it is valid and not already present
     def add_amenity(self, amenity):
         """Add an amenity to the place"""
         from app.models.amenity import Amenity
