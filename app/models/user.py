@@ -1,7 +1,9 @@
 from app.models.base_model import BaseModel
 import re
 
+
 class User(BaseModel):
+    # Initialize a new user with validated attributes
     def __init__(self, first_name, last_name, email, is_admin=False):
         super().__init__()
         self.first_name = self.validate_first_name(first_name)
@@ -10,6 +12,8 @@ class User(BaseModel):
         self.is_admin = is_admin
         self.places = []  # List to store user's places
 
+
+    # Validate that the first name is a non-empty string within length limits
     def validate_first_name(self, first_name):
         """Validate first name: required, max 50 characters"""
         if not first_name or not isinstance(first_name, str):
@@ -18,6 +22,8 @@ class User(BaseModel):
             raise ValueError("First name must not exceed 50 characters")
         return first_name
 
+
+    # Validate that the last name is a non-empty string within length limits
     def validate_last_name(self, last_name):
         """Validate last name: required, max 50 characters"""
         if not last_name or not isinstance(last_name, str):
@@ -26,6 +32,8 @@ class User(BaseModel):
             raise ValueError("Last name must not exceed 50 characters")
         return last_name
 
+
+    # Validate that the email is a non-empty string matching proper email format
     def validate_email(self, email):
         """Validate email: required, proper format"""
         if not email or not isinstance(email, str):
@@ -36,6 +44,8 @@ class User(BaseModel):
             raise ValueError("Invalid email format")
         return email
 
+
+    # Add a place to the user's list of associated places
     def add_place(self, place):
         """Add a place to the user's list of places"""
         self.places.append(place)
