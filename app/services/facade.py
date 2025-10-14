@@ -42,13 +42,6 @@ class HBnBFacade:
         return user
     
 
-
-    # Placeholder method for fetching a place by ID
-    def get_place(self, place_id):
-        # Logic will be implemented in later tasks
-        pass
-
-
     def create_amenity(self, amenity_data):
         amenity_name = amenity_data.get("name")
 
@@ -85,3 +78,4 @@ class HBnBFacade:
 
         self.amenity_repo.update(amenity_id, amenity_data)
         return amenity
+
