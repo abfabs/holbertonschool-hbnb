@@ -1,7 +1,7 @@
 from app.persistence.repository import InMemoryRepository
 from app.models.user import User
 from app.models.amenity import Amenity
-
+from app.models.place import Place
 
 class HBnBFacade:
     # Initialize the facade with in-memory repositories for all entities
@@ -88,3 +88,64 @@ class HBnBFacade:
         self.amenity_repo.update(amenity_id, amenity_data)
         return amenity
 
+
+    def create_place(self, place_data):
+        """Create a new place with validation"""
+        # Validate required fields
+        owner_id = place_data.get('owner_id')
+        if not owner_id:
+            raise ValueError("Owner ID is required")
+        
+        # Verify that the owner exists
+        owner = self.get_user(owner_id)
+        if not owner:
+            raise ValueError("Owner not found")
+        
+        # Extract place data
+        title = place_data.get('title')
+        description = place_data.get('description', '')
+        price = place_data.get('price')
+        latitude = place_data.get('latitude')
+        longitude = place_data.get('longitude')
+        
+        # Create the place instance (validation happens in Place.__init__)
+        place = Place(
+            title=title,
+            description=description,
+            price=price,
+            latitude=latitude,
+            longitude=longitude,
+            owner=owner
+        )
+        
+        # Add to repository
+        self.place_repo.add(place)
+        
+        return place
+
+
+    def get_place(self, place_id):
+        """Retrieve a place by its unique identifier"""
+        return self.place_repo.get(place_id)
+
+    def get_all_places(self):
+        """Retrieve all places from the repository"""
+        return self.place_repo.get_all()
+
+    def update_place(self, place_id, place_data):
+        """Update place information after validating owner if changed"""
+        place = self.get_place(place_id)
+        if not place:
+            return None
+        
+        # If owner_id is being updated, verify the new owner exists
+        if 'owner_id' in place_data:
+            new_owner = self.get_user(place_data['owner_id'])
+            if not new_owner:
+                raise ValueError("Owner not found")
+            # Replace owner_id with actual owner object for validation
+            place_data['owner'] = new_owner
+            del place_data['owner_id']
+        
+        self.place_repo.update(place_id, place_data)
+        return place
