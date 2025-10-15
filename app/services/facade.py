@@ -2,6 +2,8 @@ from app.persistence.repository import InMemoryRepository
 from app.models.user import User
 from app.models.amenity import Amenity
 from app.models.place import Place
+from app.models.review import Review
+
 
 class HBnBFacade:
     # Initialize the facade with in-memory repositories for all entities
@@ -149,3 +151,99 @@ class HBnBFacade:
         
         self.place_repo.update(place_id, place_data)
         return place
+    
+
+
+    def create_review(self, review_data):
+        """Create a new review with validation for user, place, and rating"""
+        # Validate required fields
+        user_id = review_data.get('user_id')
+        place_id = review_data.get('place_id')
+        
+        if not user_id:
+            raise ValueError("User ID is required")
+        if not place_id:
+            raise ValueError("Place ID is required")
+        
+        # Verify that the user exists
+        user = self.get_user(user_id)
+        if not user:
+            raise ValueError("User not found")
+        
+        # Verify that the place exists
+        place = self.get_place(place_id)
+        if not place:
+            raise ValueError("Place not found")
+        
+        # Extract review data
+        text = review_data.get('text')
+        rating = review_data.get('rating')
+        
+        # Create the review instance (validation happens in Review.__init__)
+        review = Review(
+            text=text,
+            rating=rating,
+            place=place,
+            user=user
+        )
+        
+        # Add review to repository
+        self.review_repo.add(review)
+        
+        # Add review to the place's review list
+        place.add_review(review)
+        
+        return review
+
+    def get_review(self, review_id):
+        """Retrieve a review by its unique identifier"""
+        return self.review_repo.get(review_id)
+
+    def get_all_reviews(self):
+        """Retrieve all reviews from the repository"""
+        return self.review_repo.get_all()
+
+    def get_reviews_by_place(self, place_id):
+        """Retrieve all reviews for a specific place"""
+        place = self.get_place(place_id)
+        if not place:
+            return None
+        return place.reviews
+
+    def update_review(self, review_id, review_data):
+        """Update review information after validating user and place if changed"""
+        review = self.get_review(review_id)
+        if not review:
+            return None
+        
+        # If user_id is being updated, verify the new user exists
+        if 'user_id' in review_data:
+            new_user = self.get_user(review_data['user_id'])
+            if not new_user:
+                raise ValueError("User not found")
+            review_data['user'] = new_user
+            del review_data['user_id']
+        
+        # If place_id is being updated, verify the new place exists
+        if 'place_id' in review_data:
+            new_place = self.get_place(review_data['place_id'])
+            if not new_place:
+                raise ValueError("Place not found")
+            review_data['place'] = new_place
+            del review_data['place_id']
+        
+        self.review_repo.update(review_id, review_data)
+        return review
+
+    def delete_review(self, review_id):
+        """Delete a review from the repository"""
+        review = self.get_review(review_id)
+        if not review:
+            return False
+        
+        # Remove review from the place's review list
+        if review.place and review in review.place.reviews:
+            review.place.reviews.remove(review)
+        
+        self.review_repo.delete(review_id)
+        return True
