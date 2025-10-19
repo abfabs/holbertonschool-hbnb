@@ -45,3 +45,16 @@ class Review(BaseModel):
         if not isinstance(user, User):
             raise ValueError("User must be a valid User instance")
         return user
+    
+    # NEW METHOD: Override update to re-validate rating
+    def update(self, data):
+        """Update the attributes with validation"""
+        for key, value in data.items():
+            if hasattr(self, key):
+                # Validate rating if it's being updated
+                if key == 'rating':
+                    value = self.validate_rating(value)
+                elif key == 'text':
+                    value = self.validate_text(value)
+                setattr(self, key, value)
+        self.save()

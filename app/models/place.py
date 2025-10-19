@@ -67,6 +67,9 @@ class Place(BaseModel):
     # Add a review to the place's list of reviews
     def add_review(self, review):
         """Add a review to the place"""
+        from app.models.review import Review
+        if not isinstance(review, Review):
+            raise ValueError("Review must be a valid Review instance")
         self.reviews.append(review)
 
 

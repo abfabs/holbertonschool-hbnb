@@ -175,6 +175,16 @@ class HBnBFacade:
         if not place:
             raise ValueError("Place not found")
         
+        # NEW: Check if user is trying to review their own place
+        if place.owner.id == user_id:
+            raise ValueError("You cannot review your own place")
+        
+        # NEW: Check if user has already reviewed this place
+        existing_reviews = self.get_reviews_by_place(place_id)
+        for review in existing_reviews:
+            if review.user.id == user_id:
+                raise ValueError("You have already reviewed this place")
+        
         # Extract review data
         text = review_data.get('text')
         rating = review_data.get('rating')
@@ -195,6 +205,7 @@ class HBnBFacade:
         
         return review
 
+
     def get_review(self, review_id):
         """Retrieve a review by its unique identifier"""
         return self.review_repo.get(review_id)
@@ -211,10 +222,16 @@ class HBnBFacade:
         return place.reviews
 
     def update_review(self, review_id, review_data):
-        """Update review information after validating user and place if changed"""
+        """Update review info after validating user and place if changed"""
         review = self.get_review(review_id)
         if not review:
             return None
+        
+        # NEW: Validate rating if it's being updated
+        if 'rating' in review_data:
+            rating = review_data['rating']
+            if not isinstance(rating, int) or rating < 1 or rating > 5:
+                raise ValueError("Rating must be between 1 and 5")
         
         # If user_id is being updated, verify the new user exists
         if 'user_id' in review_data:
@@ -234,6 +251,7 @@ class HBnBFacade:
         
         self.review_repo.update(review_id, review_data)
         return review
+
 
     def delete_review(self, review_id):
         """Delete a review from the repository"""
