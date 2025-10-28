@@ -42,14 +42,13 @@ class ProtectedResource(Resource):
     @api.response(401, 'Invalid token')
     def get(self):
         """A protected endpoint that requires a valid JWT token"""
-        print("jwt------")
-        print(get_jwt_identity())
-        current_user = get_jwt_identity() # Retrieve the user's identity from the token
+
+        current_user_id = get_jwt_identity() # Retrieve the user's identity from the token
         #if you need to see if the user is an admin or not, you can access additional claims using get_jwt() :
         claims = get_jwt()
         #additional claims["is_admin"] -> True or False
         return {
-                'message': f'Hello, user {current_user}', 
-                'user_id': current_user.id,
+                'message': f'Hello, user {current_user_id}', 
+                'user_id': current_user_id,
                 'is_admin': claims.get('is_admin')
         }, 200
