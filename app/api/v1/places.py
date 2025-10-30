@@ -1,18 +1,15 @@
 from flask_restx import Namespace, Resource, fields
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from app.services.facade import HBnBFacade
 from app.services import facade
 
 api = Namespace('places', description='Place operations')
 
-# Define the place model for input validation and documentation
 place_model = api.model('Place', {
     'title': fields.String(required=True, description='Title of the place'),
     'description': fields.String(description='Description of the place'),
     'price': fields.Float(required=True, description='Price per night'),
     'latitude': fields.Float(required=True, description='Latitude of the place'),
-    'longitude': fields.Float(required=True, description='Longitude of the place'),
-    'owner_id': fields.String(required=True, description='ID of the owner')
+    'longitude': fields.Float(required=True, description='Longitude of the place')
 })
 
 @api.route('/')
@@ -55,6 +52,7 @@ class PlaceList(Resource):
             'owner_id': place.owner.id
         } for place in all_places], 200
 
+
 @api.route('/<place_id>')
 class PlaceResource(Resource):
     @api.response(200, 'Place details retrieved successfully')
@@ -79,20 +77,21 @@ class PlaceResource(Resource):
     @api.response(404, 'Place not found')
     @api.response(403, 'Unauthorized action')
     @api.response(400, 'Invalid input data')
-    @jwt_required()  # Add authentication
+    @jwt_required()
     def put(self, place_id):
         """Update a place's information"""
-        current_user_id = get_jwt_identity()  # Get authenticated user
+        current_user_id = get_jwt_identity()
         place_data = api.payload
         
-        # Get the place to check ownership
         place = facade.get_place(place_id)
         if not place:
             return {'error': 'Place not found'}, 404
         
-        # Check if current user is the owner
         if place.owner.id != current_user_id:
             return {'error': 'Unauthorized action'}, 403
+        
+        if 'owner_id' in place_data:
+            del place_data['owner_id']
         
         try:
             updated_place = facade.update_place(place_id, place_data)
@@ -107,8 +106,6 @@ class PlaceResource(Resource):
             }, 200
         except ValueError as e:
             return {'error': str(e)}, 400
-
-
 
 @api.route('/<place_id>/reviews')
 class PlaceReviewList(Resource):

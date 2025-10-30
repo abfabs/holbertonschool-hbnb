@@ -1,15 +1,12 @@
 from flask_restx import Namespace, Resource, fields
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from app.services.facade import HBnBFacade
 from app.services import facade
 
 api = Namespace('reviews', description='Review operations')
 
-# Define the review model for input validation and documentation
 review_model = api.model('Review', {
     'text': fields.String(required=True, description='Text of the review'),
     'rating': fields.Integer(required=True, description='Rating of the place (1-5)'),
-    'user_id': fields.String(required=True, description='ID of the user'),
     'place_id': fields.String(required=True, description='ID of the place')
 })
 
@@ -24,7 +21,7 @@ class ReviewList(Resource):
         """Register a new review"""
         current_user_id = get_jwt_identity()  
         review_data = api.payload
-        review_data['user_id'] = current_user_id  
+        review_data['user_id'] = current_user_id
         
         try:
             new_review = facade.create_review(review_data)
@@ -79,11 +76,9 @@ class ReviewResource(Resource):
         current_user_id = get_jwt_identity()  
         review_data = api.payload
         
-        
         review = facade.get_review(review_id)
         if not review:
             return {'error': 'Review not found'}, 404
-        
         
         if review.user.id != current_user_id:
             return {'error': 'Unauthorized action'}, 403
@@ -103,37 +98,22 @@ class ReviewResource(Resource):
     @api.response(200, 'Review deleted successfully')
     @api.response(404, 'Review not found')
     @api.response(403, 'Unauthorized action')  
+    @api.response(500, 'Failed to delete review')
     @api.response(401, 'Unauthorized')  
     @jwt_required() 
     def delete(self, review_id):
         """Delete a review"""
         current_user_id = get_jwt_identity()  
         
-        
         review = facade.get_review(review_id)
         if not review:
             return {'error': 'Review not found'}, 404
-        
         
         if review.user.id != current_user_id:
             return {'error': 'Unauthorized action'}, 403
         
         success = facade.delete_review(review_id)
+        if not success:
+            return {'error': 'Failed to delete review'}, 500
+            
         return {'message': 'Review deleted successfully'}, 200
-
-@api.route('/places/<place_id>/reviews')
-class PlaceReviewList(Resource):
-    @api.response(200, 'List of reviews for the place retrieved successfully')
-    @api.response(404, 'Place not found')
-    def get(self, place_id):
-        """Get all reviews for a specific place"""
-        reviews = facade.get_reviews_by_place(place_id)
-        if reviews is None:
-            return {'error': 'Place not found'}, 404
-        return [{
-            'id': review.id,
-            'text': review.text,
-            'rating': review.rating,
-            'user_id': review.user.id,
-            'place_id': review.place.id
-        } for review in reviews], 200

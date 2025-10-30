@@ -1,6 +1,5 @@
 from flask_restx import Namespace, Resource, fields
-from app.services.facade import HBnBFacade
-from app.services import facade
+from app.services import facade 
 
 api = Namespace('amenities', description='Amenity operations')
 
@@ -15,7 +14,6 @@ class AmenityList(Resource):
     @api.response(201, 'Amenity successfully created')
     @api.response(400, 'Invalid input data')
     def post(self):
-    
         """Register a new amenity"""
         amenity_data = api.payload
 
