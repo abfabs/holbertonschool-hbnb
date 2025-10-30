@@ -1,5 +1,5 @@
 from flask_restx import Namespace, Resource, fields
-from flask_jwt_extended import jwt_required, get_jwt_identity  
+from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 from app.services.facade import HBnBFacade
 from app.services import facade
 
@@ -24,20 +24,33 @@ user_output_model = api.model('UserOutput', {
 
 user_update_model = api.model('UserUpdate', {
     'first_name': fields.String(required=True, description='First name of the user'),
-    'last_name': fields.String(required=True, description='Last name of the user')
-    
-    
+    'last_name': fields.String(required=True, description='Last name of the user')   
+})
+
+admin_user_update_model = api.model('AdminUserUpdate', {
+    'first_name': fields.String(required=False, description='First name of the user'),
+    'last_name': fields.String(required=False, description='Last name of the user'),
+    'email': fields.String(required=False, description='Email of the user'),
+    'password': fields.String(required=False, description='Password (will be hashed automatically)'),
+    'is_admin': fields.Boolean(required=False, description='Admin status')
 })
 
 @api.route('/')
 class UserList(Resource):
     
+    @jwt_required()
     @api.expect(user_input_model, validate=True)
     @api.response(201, 'User successfully created', user_output_model)
     @api.response(400, 'Email already registered')
     @api.response(400, 'Invalid input data')
     def post(self):
-        """Register a new user"""
+        """Register a new user (Admin only)"""
+        claims = get_jwt()
+        is_admin = claims.get('is_admin', False)
+        
+        if not is_admin:
+            return {'error': 'Admin privileges required'}, 403
+        
         user_data = api.payload
 
         
@@ -92,38 +105,63 @@ class UserResource(Resource):
         }, 200
     
     
-    @api.expect(user_update_model, validate=True)  
+    @api.expect(admin_user_update_model, validate=True)  
     @api.response(200, 'User successfully updated')
     @api.response(404, 'User not found')
     @api.response(403, 'Unauthorized action')  
-    @api.response(400, 'You cannot modify email or password')  
+    @api.response(400, 'You cannot modify email or password')
+    @api.response(400, 'Email already in use')
     @api.response(401, 'Unauthorized')  
     @api.response(400, 'Invalid input data')
     @jwt_required()  
     def put(self, user_id):
-        """Update user's own information"""
-        current_user_id = get_jwt_identity() 
-        
-        
-        if user_id != current_user_id:
-            return {'error': 'Unauthorized action'}, 403
+        """Update user information (Admins can update any user, regular users can only update themselves)"""
+        current_user_id = get_jwt_identity()
+        claims = get_jwt()
+        is_admin = claims.get('is_admin', False)
         
         user_data = api.payload
         
+        if is_admin:
+            if 'email' in user_data:
+                existing_user = facade.get_user_by_email(user_data['email'])
+                if existing_user and existing_user.id != user_id:
+                    return {'error': 'Email already in use'}, 400
+            
+            try:
+                updated_user = facade.update_user(user_id, user_data)
+                if not updated_user:
+                    return {'error': "User not found"}, 404
+                return {
+                    'id': updated_user.id, 
+                    'first_name': updated_user.first_name, 
+                    'last_name': updated_user.last_name, 
+                    'email': updated_user.email,
+                    'is_admin': updated_user.is_admin
+                }, 200
+            except ValueError as e:
+                return {'error': str(e)}, 400
         
-        if 'email' in user_data or 'password' in user_data:
-            return {'error': 'You cannot modify email or password'}, 400
-        
-        try:
-            updated_user = facade.update_user(user_id, user_data)
-            if not updated_user:
-                return {'error': "User not found"}, 404
-            return {
-                'id': updated_user.id, 
-                'first_name': updated_user.first_name, 
-                'last_name': updated_user.last_name, 
-                'email': updated_user.email,
-                'is_admin': updated_user.is_admin
-            }, 200
-        except ValueError as e:
-            return {'error': str(e)}, 400
+        else:
+            if user_id != current_user_id:
+                return {'error': 'Unauthorized action'}, 403
+            
+            if 'email' in user_data or 'password' in user_data:
+                return {'error': 'You cannot modify email or password'}, 400
+            
+            if 'is_admin' in user_data:
+                return {'error': 'You cannot modify admin status'}, 400
+            
+            try:
+                updated_user = facade.update_user(user_id, user_data)
+                if not updated_user:
+                    return {'error': "User not found"}, 404
+                return {
+                    'id': updated_user.id, 
+                    'first_name': updated_user.first_name, 
+                    'last_name': updated_user.last_name, 
+                    'email': updated_user.email,
+                    'is_admin': updated_user.is_admin
+                }, 200
+            except ValueError as e:
+                return {'error': str(e)}, 400

@@ -49,6 +49,10 @@ class HBnBFacade:
             if user_exists:
                 raise ValueError("Email already registered")
             
+        if 'password' in user_data:
+            user.hash_password(user_data['password'])
+            del user_data['password']
+
         self.user_repo.update(user_id, user_data)
         return user
     
