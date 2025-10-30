@@ -1,4 +1,5 @@
 from flask_restx import Namespace, Resource, fields
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.services.facade import HBnBFacade
 from app.services import facade
 
@@ -17,9 +18,14 @@ class ReviewList(Resource):
     @api.expect(review_model)
     @api.response(201, 'Review successfully created')
     @api.response(400, 'Invalid input data')
+    @api.response(401, 'Unauthorized')  
+    @jwt_required()  
     def post(self):
         """Register a new review"""
+        current_user_id = get_jwt_identity()  
         review_data = api.payload
+        review_data['user_id'] = current_user_id  
+        
         try:
             new_review = facade.create_review(review_data)
             return {
@@ -64,14 +70,26 @@ class ReviewResource(Resource):
     @api.expect(review_model)
     @api.response(200, 'Review updated successfully')
     @api.response(404, 'Review not found')
+    @api.response(403, 'Unauthorized action')  
     @api.response(400, 'Invalid input data')
+    @api.response(401, 'Unauthorized')  
+    @jwt_required()  
     def put(self, review_id):
         """Update a review's information"""
+        current_user_id = get_jwt_identity()  
         review_data = api.payload
+        
+        
+        review = facade.get_review(review_id)
+        if not review:
+            return {'error': 'Review not found'}, 404
+        
+        
+        if review.user.id != current_user_id:
+            return {'error': 'Unauthorized action'}, 403
+        
         try:
             updated_review = facade.update_review(review_id, review_data)
-            if not updated_review:
-                return {'error': 'Review not found'}, 404
             return {
                 'id': updated_review.id,
                 'text': updated_review.text,
@@ -84,11 +102,23 @@ class ReviewResource(Resource):
 
     @api.response(200, 'Review deleted successfully')
     @api.response(404, 'Review not found')
+    @api.response(403, 'Unauthorized action')  
+    @api.response(401, 'Unauthorized')  
+    @jwt_required() 
     def delete(self, review_id):
         """Delete a review"""
-        success = facade.delete_review(review_id)
-        if not success:
+        current_user_id = get_jwt_identity()  
+        
+        
+        review = facade.get_review(review_id)
+        if not review:
             return {'error': 'Review not found'}, 404
+        
+        
+        if review.user.id != current_user_id:
+            return {'error': 'Unauthorized action'}, 403
+        
+        success = facade.delete_review(review_id)
         return {'message': 'Review deleted successfully'}, 200
 
 @api.route('/places/<place_id>/reviews')
