@@ -1,70 +1,60 @@
 from app.models.base_model import BaseModel
-
+from app.extensions import db
 
 class Place(BaseModel):
-    # Initialize a new place with validated attributes and empty review and amenity lists
-    def __init__(self, title, description, price, latitude, longitude, owner):
+    """Place model for database persistence"""
+    __tablename__ = 'places'
+
+    title = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.String(500))
+    price = db.Column(db.Float, nullable=False)
+    latitude = db.Column(db.Float, nullable=False)
+    longitude = db.Column(db.Float, nullable=False)
+
+    def __init__(self, title, description, price, latitude, longitude, owner=None):
+        """Initialize a new place with validated attributes"""
         super().__init__()
         self.title = self.validate_title(title)
-        self.description = description  # Optional, no validation needed
+        self.description = description
         self.price = self.validate_price(price)
         self.latitude = self.validate_latitude(latitude)
         self.longitude = self.validate_longitude(longitude)
-        self.owner = self.validate_owner(owner)
-        self.reviews = []  # List to store related reviews
-        self.amenities = []  # List to store related amenities
+        self.owner = owner
+        self.reviews = []
+        self.amenities = []
 
-
-    # Validate that the title is a non-empty string within length limits
     def validate_title(self, title):
-        """Validate title: required, max 100 characters"""
+        """Validate that the title is a non-empty string within length limits"""
         if not title or not isinstance(title, str):
             raise ValueError("Title is required and must be a string")
         if len(title) > 100:
             raise ValueError("Title must not exceed 100 characters")
         return title
 
-
-    # Validate that the price is a positive number
     def validate_price(self, price):
-        """Validate price: must be positive"""
+        """Validate that the price is a positive number"""
         if not isinstance(price, (int, float)):
             raise ValueError("Price must be a number")
         if price <= 0:
             raise ValueError("Price must be a positive value")
         return float(price)
 
-
-    # Validate that the latitude is a number within valid geographic range
     def validate_latitude(self, latitude):
-        """Validate latitude: must be between -90.0 and 90.0"""
+        """Validate that the latitude is a number within valid geographic range"""
         if not isinstance(latitude, (int, float)):
             raise ValueError("Latitude must be a number")
         if latitude < -90.0 or latitude > 90.0:
             raise ValueError("Latitude must be between -90.0 and 90.0")
         return float(latitude)
 
-
-    # Validate that the longitude is a number within valid geographic range
     def validate_longitude(self, longitude):
-        """Validate longitude: must be between -180.0 and 180.0"""
+        """Validate that the longitude is a number within valid geographic range"""
         if not isinstance(longitude, (int, float)):
             raise ValueError("Longitude must be a number")
         if longitude < -180.0 or longitude > 180.0:
             raise ValueError("Longitude must be between -180.0 and 180.0")
         return float(longitude)
 
-
-    # Validate that the owner is a valid User instance
-    def validate_owner(self, owner):
-        """Validate owner: must be a User instance"""
-        from app.models.user import User
-        if not isinstance(owner, User):
-            raise ValueError("Owner must be a valid User instance")
-        return owner
-
-
-    # Add a review to the place's list of reviews
     def add_review(self, review):
         """Add a review to the place"""
         from app.models.review import Review
@@ -72,8 +62,6 @@ class Place(BaseModel):
             raise ValueError("Review must be a valid Review instance")
         self.reviews.append(review)
 
-
-    # Add an amenity to the place if it is valid and not already present
     def add_amenity(self, amenity):
         """Add an amenity to the place"""
         from app.models.amenity import Amenity
