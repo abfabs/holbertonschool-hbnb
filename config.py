@@ -11,6 +11,8 @@ class Config:
 # Development environment configuration with debug mode enabled
 class DevelopmentConfig(Config):
     DEBUG = True
+    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL', 'sqlite:///development.db')
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 # Configuration dictionary mapping environment names to config classes
 config = {

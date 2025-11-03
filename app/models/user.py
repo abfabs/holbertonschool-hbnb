@@ -1,6 +1,6 @@
 from app.models.base_model import BaseModel
 import re
-from app.extentions import bcrypt
+from app.extensions import bcrypt
 
 class User(BaseModel):
     # Initialize a new user with validated attributes
