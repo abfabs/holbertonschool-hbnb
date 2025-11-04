@@ -1,4 +1,5 @@
 from app.models.base_model import BaseModel
+from app.models.place_amenity import place_amenity
 from app.extensions import db
 
 class Place(BaseModel):
@@ -11,6 +12,15 @@ class Place(BaseModel):
     latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)
 
+        # Foreign key for owner relationship
+    owner_id = db.Column(db.String(36), db.ForeignKey('users.id'), nullable=False)
+
+    # Relationships
+    owner = db.relationship('User', backref='places', lazy=True)
+    amenities = db.relationship('Amenity', secondary=place_amenity, lazy='subquery',
+                            backref=db.backref('places', lazy=True))
+
+
     def __init__(self, title, description, price, latitude, longitude, owner=None):
         """Initialize a new place with validated attributes"""
         super().__init__()
@@ -19,9 +29,9 @@ class Place(BaseModel):
         self.price = self.validate_price(price)
         self.latitude = self.validate_latitude(latitude)
         self.longitude = self.validate_longitude(longitude)
-        self.owner = owner
+        if owner:
+            self.owner = owner
         self.reviews = []
-        self.amenities = []
 
     def validate_title(self, title):
         """Validate that the title is a non-empty string within length limits"""

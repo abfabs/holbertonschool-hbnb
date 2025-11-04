@@ -8,13 +8,25 @@ class Review(BaseModel):
     text = db.Column(db.String(500), nullable=False)
     rating = db.Column(db.Integer, nullable=False)
 
+        # Foreign keys
+    user_id = db.Column(db.String(36), db.ForeignKey('users.id'), nullable=False)
+    place_id = db.Column(db.String(36), db.ForeignKey('places.id'), nullable=False)
+
+    # Relationships
+    user = db.relationship('User', backref='reviews', lazy=True)
+    place = db.relationship('Place', backref='reviews', lazy=True)
+
+
     def __init__(self, text, rating, place=None, user=None):
         """Initialize a new review with validated attributes"""
         super().__init__()
         self.text = self.validate_text(text)
         self.rating = self.validate_rating(rating)
-        self.place = place
-        self.user = user
+        if place:
+            self.place = place  # SQLAlchemy will handle place_id
+        if user:
+            self.user = user  # SQLAlchemy will handle user_id
+
 
     def validate_text(self, text):
         """Validate that the review text is a non-empty string"""

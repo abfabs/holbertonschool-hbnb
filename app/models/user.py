@@ -19,9 +19,7 @@ class User(BaseModel):
         self.first_name = self.validate_first_name(first_name)
         self.last_name = self.validate_last_name(last_name)
         self.email = self.validate_email(email)
-        self.is_admin = is_admin
-        self.places = []  # List to store user's places
-        
+        self.is_admin = is_admin        
         if password:
             self.hash_password(password)
 
