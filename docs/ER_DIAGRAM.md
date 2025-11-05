@@ -85,17 +85,8 @@ PLACE_AMENITY {
    - `PLACE_AMENITY.amenity_id` references `AMENITY.id`
 3. **Cascading Deletes**: Enabled for all relationships to maintain referential integrity
 
-## Viewing the Diagram
-
-To view this diagram:
-
-1. **On GitHub**: Push the file and the diagram will render automatically
-2. **Mermaid Live Editor**: Go to https://mermaid.live and paste the mermaid code block
-3. **VS Code**: Install "Markdown Preview Mermaid Support" extension and preview the file
-
 ## Database Schema Version
 
-- **Version**: 1.0
 - **Last Updated**: November 5, 2025
-
 - **Authors**: Holberton C27 Tirana  
+
