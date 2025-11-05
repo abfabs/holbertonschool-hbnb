@@ -1,4 +1,4 @@
-from app import create_app
+from app import create_app, db
 from app.models.user import User
 from app.models.place import Place
 from app.models.review import Review
@@ -6,12 +6,18 @@ from app.models.amenity import Amenity
 import time
 from datetime import datetime
 
+
 # Create app and push context for all tests
 app = create_app(config_class='config.DevelopmentConfig')
 app.app_context().push()
 
+# Setup: Drop and recreate tables before tests
+db.drop_all()
+db.create_all()
+
 
 # ==================== USER TESTS ====================
+
 
 def test_user_creation():
     """Test User class creation and validation"""
@@ -28,6 +34,7 @@ def test_user_creation():
         print(f"✗ User creation test failed: {e}")
     except Exception as e:
         print(f"✗ Unexpected error: {e}")
+
 
 
 def test_user_password_hashing():
@@ -49,6 +56,7 @@ def test_user_password_hashing():
         print(f"✗ Unexpected error: {e}")
 
 
+
 def test_user_admin_creation():
     """Test creating admin users"""
     print("\n--- Testing Admin User Creation ---")
@@ -64,6 +72,7 @@ def test_user_admin_creation():
         print(f"✗ Admin user creation test failed: {e}")
     except Exception as e:
         print(f"✗ Unexpected error: {e}")
+
 
 
 def test_user_email_validation():
@@ -102,6 +111,7 @@ def test_user_email_validation():
             print(f"✗ Should have accepted valid email: {email}")
 
 
+
 def test_user_name_validation():
     """Test name field validations"""
     print("\n--- Testing Name Validation ---")
@@ -133,7 +143,9 @@ def test_user_name_validation():
         print("✗ Should have accepted 50-character name")
 
 
+
 # ==================== AMENITY TESTS ====================
+
 
 def test_amenity_creation():
     """Test Amenity class creation"""
@@ -146,6 +158,7 @@ def test_amenity_creation():
         print(f"✗ Amenity creation test failed: {e}")
     except Exception as e:
         print(f"✗ Unexpected error: {e}")
+
 
 
 def test_amenity_name_validation():
@@ -173,6 +186,7 @@ def test_amenity_name_validation():
         print("✗ Should have accepted 50-character amenity name")
 
 
+
 def test_multiple_amenities():
     """Test creating multiple amenities"""
     print("\n--- Testing Multiple Amenities ---")
@@ -194,7 +208,9 @@ def test_multiple_amenities():
         print(f"✗ Unexpected error: {e}")
 
 
+
 # ==================== PLACE TESTS ====================
+
 
 def test_place_creation():
     """Test Place class creation with relationships"""
@@ -225,6 +241,7 @@ def test_place_creation():
         print(f"✗ Unexpected error: {e}")
 
 
+
 def test_place_price_validation():
     """Test place price validation with various scenarios"""
     print("\n--- Testing Place Price Validation ---")
@@ -250,6 +267,7 @@ def test_place_price_validation():
             print(f"✓ Valid price accepted: ${price}")
         except ValueError:
             print(f"✗ Should have accepted valid price: ${price}")
+
 
 
 def test_place_coordinate_validation():
@@ -298,6 +316,7 @@ def test_place_coordinate_validation():
             print(f"✗ Should have accepted valid coordinates: ({lat}, {lon})")
 
 
+
 def test_place_title_validation():
     """Test place title validation"""
     print("\n--- Testing Place Title Validation ---")
@@ -325,7 +344,9 @@ def test_place_title_validation():
         print("✗ Should have accepted 100-character title")
 
 
+
 # ==================== REVIEW TESTS ====================
+
 
 def test_review_creation():
     """Test Review class creation with relationships"""
@@ -349,7 +370,6 @@ def test_review_creation():
         assert review.rating == 5
         assert review.place == place
         assert review.user == reviewer
-        # Only check length if reviews list exists
         if hasattr(place, 'reviews') and place.reviews is not None:
             assert len(place.reviews) >= 1
         print("✓ Review creation and relationship test passed!")
@@ -357,6 +377,7 @@ def test_review_creation():
         print(f"✗ Review creation test failed: {e}")
     except Exception as e:
         print(f"✗ Unexpected error: {e}")
+
 
 
 def test_review_rating_validation():
@@ -401,6 +422,7 @@ def test_review_rating_validation():
             print(f"✗ Should have accepted valid rating: {rating}")
 
 
+
 def test_review_text_validation():
     """Test review text validation"""
     print("\n--- Testing Review Text Validation ---")
@@ -421,6 +443,7 @@ def test_review_text_validation():
         print("✓ None review text validation passed!")
 
 
+
 def test_multiple_reviews_same_place():
     """Test multiple users reviewing the same place"""
     print("\n--- Testing Multiple Reviews for Same Place ---")
@@ -438,7 +461,6 @@ def test_multiple_reviews_same_place():
             review = Review(text=f"Review {i+1}", rating=i+3, place=place, user=reviewer)
             place.add_review(review)
         
-        # Only check if reviews attribute exists and is iterable
         if hasattr(place, 'reviews') and place.reviews is not None:
             print(f"✓ Multiple reviews for same place test passed! ({len(place.reviews)} reviews)")
         else:
@@ -449,7 +471,9 @@ def test_multiple_reviews_same_place():
         print(f"✗ Unexpected error: {e}")
 
 
+
 # ==================== RELATIONSHIP TESTS ====================
+
 
 def test_place_amenity_relationship():
     """Test Place-Amenity many-to-many relationship"""
@@ -477,6 +501,7 @@ def test_place_amenity_relationship():
         print(f"✗ Unexpected error: {e}")
 
 
+
 def test_user_multiple_places():
     """Test one user owning multiple places"""
     print("\n--- Testing User with Multiple Places ---")
@@ -497,6 +522,7 @@ def test_user_multiple_places():
         print(f"✗ Multiple places test failed: {e}")
     except Exception as e:
         print(f"✗ Unexpected error: {e}")
+
 
 
 def test_amenity_multiple_places():
@@ -523,7 +549,9 @@ def test_amenity_multiple_places():
         print(f"✗ Unexpected error: {e}")
 
 
+
 # ==================== UPDATE METHOD TESTS ====================
+
 
 def test_update_method():
     """Test the update method from BaseModel"""
@@ -531,7 +559,6 @@ def test_update_method():
     try:
         user = User(first_name="John", last_name="Doe", email="john12@example.com", password="password123")
         
-        # Check if updated_at exists before comparing
         if user.updated_at is not None:
             original_updated_at = user.updated_at
             time.sleep(0.01)
@@ -543,7 +570,6 @@ def test_update_method():
                 assert user.updated_at > original_updated_at
             print("✓ Update method test passed!")
         else:
-            # If updated_at not set, just test the update works
             user.update({"first_name": "Jane", "last_name": "Smith"})
             assert user.first_name == "Jane"
             assert user.last_name == "Smith"
@@ -552,6 +578,7 @@ def test_update_method():
         print(f"✗ Update method test failed: {e}")
     except Exception as e:
         print(f"✗ Unexpected error: {e}")
+
 
 
 def test_update_place():
@@ -583,7 +610,9 @@ def test_update_place():
         print(f"✗ Unexpected error: {e}")
 
 
+
 # ==================== EDGE CASE TESTS ====================
+
 
 def test_special_characters_in_fields():
     """Test special characters in various fields"""
@@ -614,6 +643,7 @@ def test_special_characters_in_fields():
         print(f"✗ Special characters test failed: {e}")
 
 
+
 def test_unicode_support():
     """Test Unicode characters support"""
     print("\n--- Testing Unicode Support ---")
@@ -636,6 +666,7 @@ def test_unicode_support():
         print("✓ Unicode characters test passed!")
     except Exception as e:
         print(f"✗ Unicode test failed: {e}")
+
 
 
 def test_boundary_values():
@@ -664,7 +695,9 @@ def test_boundary_values():
         print(f"✗ Boundary values test failed: {e}")
 
 
+
 # ==================== TIMESTAMP TESTS ====================
+
 
 def test_timestamp_creation():
     """Test that timestamps are created correctly"""
@@ -672,12 +705,12 @@ def test_timestamp_creation():
     try:
         user = User(first_name="John", last_name="Doe", email="john19@example.com", password="password123")
         
-        # Just verify they exist (might be None before DB commit)
         print("✓ Timestamp creation test passed!")
     except AssertionError as e:
         print(f"✗ Timestamp creation test failed: {e}")
     except Exception as e:
         print(f"✗ Unexpected error: {e}")
+
 
 
 def test_timestamp_update():
@@ -707,7 +740,9 @@ def test_timestamp_update():
         print(f"✗ Unexpected error: {e}")
 
 
+
 # ==================== UUID TESTS ====================
+
 
 def test_uuid_uniqueness():
     """Test that UUIDs are unique"""
@@ -723,58 +758,61 @@ def test_uuid_uniqueness():
         print(f"✗ Unexpected error: {e}")
 
 
+
+def cleanup_database():
+    """Clean up test data from database"""
+    db.session.rollback()
+    db.drop_all()
+
+
 # ==================== RUN ALL TESTS ====================
+
 
 if __name__ == "__main__":
     print("=" * 60)
     print("Running Comprehensive Business Logic Layer Tests")
     print("=" * 60)
     
-    # User tests
-    test_user_creation()
-    test_user_password_hashing()
-    test_user_admin_creation()
-    test_user_email_validation()
-    test_user_name_validation()
+    try:
+        test_user_creation()
+        test_user_password_hashing()
+        test_user_admin_creation()
+        test_user_email_validation()
+        test_user_name_validation()
+        
+        test_amenity_creation()
+        test_amenity_name_validation()
+        test_multiple_amenities()
+        
+        test_place_creation()
+        test_place_price_validation()
+        test_place_coordinate_validation()
+        test_place_title_validation()
+        
+        test_review_creation()
+        test_review_rating_validation()
+        test_review_text_validation()
+        test_multiple_reviews_same_place()
+        
+        test_place_amenity_relationship()
+        test_user_multiple_places()
+        test_amenity_multiple_places()
+        
+        test_update_method()
+        test_update_place()
+        
+        test_special_characters_in_fields()
+        test_unicode_support()
+        test_boundary_values()
+        
+        test_timestamp_creation()
+        test_timestamp_update()
+        
+        test_uuid_uniqueness()
+        
+        print("\n" + "=" * 60)
+        print("All Comprehensive Tests Completed!")
+        print("=" * 60)
     
-    # Amenity tests
-    test_amenity_creation()
-    test_amenity_name_validation()
-    test_multiple_amenities()
-    
-    # Place tests
-    test_place_creation()
-    test_place_price_validation()
-    test_place_coordinate_validation()
-    test_place_title_validation()
-    
-    # Review tests
-    test_review_creation()
-    test_review_rating_validation()
-    test_review_text_validation()
-    test_multiple_reviews_same_place()
-    
-    # Relationship tests
-    test_place_amenity_relationship()
-    test_user_multiple_places()
-    test_amenity_multiple_places()
-    
-    # Update tests
-    test_update_method()
-    test_update_place()
-    
-    # Edge case tests
-    test_special_characters_in_fields()
-    test_unicode_support()
-    test_boundary_values()
-    
-    # Timestamp tests
-    test_timestamp_creation()
-    test_timestamp_update()
-    
-    # UUID tests
-    test_uuid_uniqueness()
-    
-    print("\n" + "=" * 60)
-    print("All Comprehensive Tests Completed!")
-    print("=" * 60)
+    finally:
+        cleanup_database()

@@ -1,3 +1,4 @@
+import logging
 from flask import Flask
 from flask_restx import Api
 from app.extensions import bcrypt, jwt, db
@@ -6,6 +7,9 @@ from app.api.v1.amenities import api as amenities_ns
 from app.api.v1.places import api as places_ns
 from app.api.v1.reviews import api as reviews_ns
 from app.api.v1.auth import api as auth_ns
+
+# Disable SQLAlchemy logging
+logging.getLogger('sqlalchemy.engine').setLevel(logging.WARNING)
 
 # Create and configure the Flask application with API namespaces
 def create_app(config_class="config.DevelopmentConfig"):
