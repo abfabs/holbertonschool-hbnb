@@ -9,12 +9,13 @@ from app.api.v1.reviews import api as reviews_ns
 from app.api.v1.auth import api as auth_ns
 
 # Disable SQLAlchemy logging
-logging.getLogger('sqlalchemy.engine').setLevel(logging.WARNING)
+logging.getLogger('sqlalchemy.engine').disabled = True
 
 # Create and configure the Flask application with API namespaces
 def create_app(config_class="config.DevelopmentConfig"):
     app = Flask(__name__)
     app.config.from_object(config_class)
+    app.config['SQLALCHEMY_ECHO'] = False
 
     bcrypt.init_app(app)
     jwt.init_app(app)
