@@ -97,4 +97,5 @@ To view this diagram:
 
 - **Version**: 1.0
 - **Last Updated**: November 5, 2025
-- **Author**: HBnB Development Team
+
+- **Authors**: Holberton C27 Tirana  
