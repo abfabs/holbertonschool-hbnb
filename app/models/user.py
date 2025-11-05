@@ -5,7 +5,7 @@ from sqlalchemy.orm import validates
 
 class User(BaseModel):
     """User model for database persistence"""
-    __tablename__ = 'users'
+    __tablename__ = 'user'
 
     first_name = db.Column(db.String(50), nullable=False)
     last_name = db.Column(db.String(50), nullable=False)

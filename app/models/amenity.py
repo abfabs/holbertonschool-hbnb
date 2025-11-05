@@ -3,7 +3,7 @@ from app.extensions import db
 
 class Amenity(BaseModel):
     """Amenity model for database persistence"""
-    __tablename__ = 'amenities'
+    __tablename__ = 'amenity'
 
     name = db.Column(db.String(50), nullable=False, unique=True)
 

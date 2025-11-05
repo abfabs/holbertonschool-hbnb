@@ -1,5 +1,4 @@
 -- HBnB Database Schema Creation Script
--- This script creates all tables with relationships for the HBnB project
 
 -- Drop existing tables if they exist (for clean slate)
 DROP TABLE IF EXISTS place_amenity;

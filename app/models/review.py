@@ -3,14 +3,14 @@ from app.extensions import db
 
 class Review(BaseModel):
     """Review model for database persistence"""
-    __tablename__ = 'reviews'
+    __tablename__ = 'review'
 
     text = db.Column(db.String(500), nullable=False)
     rating = db.Column(db.Integer, nullable=False)
 
         # Foreign keys
-    user_id = db.Column(db.String(36), db.ForeignKey('users.id'), nullable=False)
-    place_id = db.Column(db.String(36), db.ForeignKey('places.id'), nullable=False)
+    user_id = db.Column(db.String(36), db.ForeignKey('user.id'), nullable=False)
+    place_id = db.Column(db.String(36), db.ForeignKey('place.id'), nullable=False)
 
     # Relationships
     user = db.relationship('User', backref='reviews', lazy=True)

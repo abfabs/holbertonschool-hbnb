@@ -4,7 +4,7 @@ from app.extensions import db
 
 class Place(BaseModel):
     """Place model for database persistence"""
-    __tablename__ = 'places'
+    __tablename__ = 'place'
 
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(500))
@@ -13,7 +13,7 @@ class Place(BaseModel):
     longitude = db.Column(db.Float, nullable=False)
 
         # Foreign key for owner relationship
-    owner_id = db.Column(db.String(36), db.ForeignKey('users.id'), nullable=False)
+    owner_id = db.Column(db.String(36), db.ForeignKey('user.id'), nullable=False)
 
     # Relationships
     owner = db.relationship('User', backref='places', lazy=True)

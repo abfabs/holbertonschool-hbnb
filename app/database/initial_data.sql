@@ -1,16 +1,4 @@
 -- HBnB Initial Data Population Script
--- This script inserts the admin user and initial amenities
-
--- Insert Administrator User
-INSERT INTO user (id, first_name, last_name, email, password, is_admin) 
-VALUES (
-    '36c9050e-ddd3-4c3b-9731-9f487208bbc1',
-    'Admin',
-    'HBnB',
-    'admin@hbnb.io',
-    '$2b$12$eIst8jHXP4nhGHERe6ZP..Z1VJLVMfL7F8qKCvyp.WJqpf1NW4BKe',
-    TRUE
-);
 
 -- Insert Initial Amenities with UUID4 values
 INSERT INTO amenity (id, name) VALUES

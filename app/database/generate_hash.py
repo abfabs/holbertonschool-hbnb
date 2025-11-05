@@ -13,7 +13,7 @@ def verify_password(password, hash_value):
 
 if __name__ == "__main__":
     # Generate hash for admin1234
-    password = "admin1234"
+    password = "admin123"
     hash_value = generate_bcrypt_hash(password)
     print(f"Password: {password}")
     print(f"Hash: {hash_value}")
