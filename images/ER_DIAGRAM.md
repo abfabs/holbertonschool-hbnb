@@ -4,6 +4,7 @@
 
 This diagram represents the database schema for the HBnB (Holberton Airbnb Clone) project.
 
+ˋˋˋmermaid
 erDiagram
 USER ||--o{ PLACE : "owns"
 USER ||--o{ REVIEW : "writes"
@@ -55,7 +56,7 @@ PLACE_AMENITY {
     string amenity_id FK "references AMENITY.id"
     datetime created_at
 }
-
+ˋˋˋ
 
 ## Relationships Summary
 
@@ -88,4 +89,5 @@ PLACE_AMENITY {
 
 - **Last Updated**: November 5, 2025
 - **Authors**: Holberton C27 Tirana  
+
 
