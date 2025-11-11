@@ -45,12 +45,12 @@ nav a {
     text-decoration: none;
     padding: 0.5rem 1rem;
     transition: background-color 0.3s;
-    border: solid #b3b3b3;
+    border: 1px solid #ddd;
     border-radius: 5px;
 }
 
 nav a:hover {
-    background-color: #b3b3b3;
+    background-color: #ddd;
     border-radius: 5px;
 }
 
@@ -283,7 +283,7 @@ main {
 /* Footer Styles */
 footer {
     background-color: #fff;
-    color: #333;
+    color: #ddd;
     text-align: center;
     padding: 1.5rem;
     margin-top: auto;
