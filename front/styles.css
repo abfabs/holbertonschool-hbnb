@@ -1,0 +1,308 @@
+/* Global Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header Styles */
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Logo */
+.logo {
+    height: 50px;
+    width: auto;
+    cursor: pointer;
+}
+
+/* Navigation */
+nav {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    transition: background-color 0.3s;
+}
+
+nav a:hover {
+    background-color: #555;
+    border-radius: 5px;
+}
+
+/* Login Button */
+.login-button {
+    background-color: #007bff;
+    color: #fff !important;
+    padding: 0.5rem 1.5rem;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.login-button:hover {
+    background-color: #0056b3;
+}
+
+/* Main Content */
+main {
+    flex: 1;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* Filter Section */
+#filter {
+    background-color: #fff;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#filter h2 {
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+#filter label {
+    margin-right: 1rem;
+    font-weight: bold;
+}
+
+#filter select {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+/* Places List */
+#places-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+/* Place Card */
+.place-card {
+    margin: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.place-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.place-card h3 {
+    color: #007bff;
+    margin-bottom: 0.5rem;
+}
+
+.place-card p {
+    margin: 0.5rem 0;
+    color: #555;
+}
+
+/* Details Button */
+.details-button {
+    background-color: #28a745;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 1rem;
+    width: 100%;
+}
+
+.details-button:hover {
+    background-color: #218838;
+}
+
+/* Place Details */
+.place-details {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+.place-details h1 {
+    color: #007bff;
+    margin-bottom: 1rem;
+}
+
+/* Place Info */
+.place-info {
+    margin: 1rem 0;
+}
+
+.place-info p {
+    margin: 0.5rem 0;
+    font-size: 1.1rem;
+}
+
+.place-info strong {
+    color: #333;
+}
+
+/* Reviews Section */
+#reviews {
+    margin: 2rem 0;
+}
+
+#reviews h2 {
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+/* Review Card */
+.review-card {
+    margin: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.review-card p {
+    margin: 0.5rem 0;
+}
+
+.review-card strong {
+    color: #007bff;
+}
+
+/* Add Review Section */
+.add-review {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 2rem;
+}
+
+.add-review h2 {
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+/* Form */
+.form {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.form h2 {
+    color: #333;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.form label {
+    display: block;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.form input,
+.form textarea,
+.form select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-family: Arial, sans-serif;
+}
+
+.form textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.form button {
+    margin-top: 1.5rem;
+    padding: 0.75rem 1.5rem;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+
+.form button:hover {
+    background-color: #0056b3;
+}
+
+/* Footer Styles */
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 1.5rem;
+    margin-top: auto;
+}
+
+footer p {
+    margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    #places-list {
+        grid-template-columns: 1fr;
+    }
+
+    .place-card {
+        margin: 10px 0;
+    }
+}
