@@ -3,6 +3,7 @@
   Task 1: Login Functionality
   Task 2: List of Places
   Task 3: Place Details
+  Task 4: Add Review
 */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -37,6 +38,37 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             placeDetailsSection.innerHTML = '<p>Error: No place ID provided.</p>';
         }
+    }
+
+    // Setup review form submission (Task 4)
+    const reviewForm = document.getElementById('review-form');
+    if (reviewForm) {
+        reviewForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const token = getCookie('token');
+            if (!token) {
+                alert('You must be logged in to submit a review.');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const placeId = getPlaceIdFromURL();
+            if (!placeId) {
+                alert('Error: No place ID found.');
+                return;
+            }
+
+            const rating = document.getElementById('rating').value;
+            const reviewText = document.getElementById('review-text').value;
+
+            if (!rating || !reviewText) {
+                alert('Please provide both a rating and review text.');
+                return;
+            }
+
+            await submitReview(token, placeId, rating, reviewText);
+        });
     }
 });
 
@@ -307,6 +339,45 @@ function displayReviews(reviews) {
     }
 
     document.getElementById('place-details').appendChild(reviewsSection);
+}
+
+// ==================== TASK 4: ADD REVIEW FUNCTIONS ====================
+
+async function submitReview(token, placeId, rating, reviewText) {
+    try {
+        const response = await fetch('http://127.0.0.1:5000/api/v1/reviews/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                place_id: placeId,
+                rating: parseInt(rating),
+                text: reviewText
+            })
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            console.log('Review submitted:', data);
+            alert('Review submitted successfully!');
+
+            // Clear the form
+            document.getElementById('rating').value = '';
+            document.getElementById('review-text').value = '';
+
+            // Reload place details to show the new review
+            checkAuthenticationForPlace(placeId);
+        } else {
+            const errorData = await response.json();
+            console.error('Failed to submit review:', errorData);
+            alert(`Failed to submit review: ${errorData.message || 'Unknown error'}`);
+        }
+    } catch (error) {
+        console.error('Error submitting review:', error);
+        alert('An error occurred while submitting the review. Please try again.');
+    }
 }
 
 // ==================== COOKIE UTILITY FUNCTIONS ====================

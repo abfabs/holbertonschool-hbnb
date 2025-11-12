@@ -2,9 +2,7 @@ from flask_restx import Namespace, Resource, fields
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 from app.services import facade
 
-
 api = Namespace('places', description='Place operations')
-
 
 place_model = api.model('Place', {
     'title': fields.String(required=True, description='Title of the place'),
@@ -13,7 +11,6 @@ place_model = api.model('Place', {
     'latitude': fields.Float(required=True, description='Latitude of the place'),
     'longitude': fields.Float(required=True, description='Longitude of the place')
 })
-
 
 def serialize_place(place):
     """Helper function to serialize place with amenities"""
@@ -27,7 +24,6 @@ def serialize_place(place):
         'owner_id': place.owner.id,
         'amenities': [{'id': amenity.id, 'name': amenity.name} for amenity in place.amenities]
     }
-
 
 @api.route('/')
 class PlaceListResource(Resource):
@@ -70,7 +66,6 @@ class PlaceListResource(Resource):
             "amenities": [{"id": amenity.id, "name": amenity.name} for amenity in place.amenities]
         } for place in all_places], 200
 
-
 @api.route('/<place_id>')
 class PlaceResource(Resource):
     @api.response(200, 'Place details retrieved successfully')
@@ -80,6 +75,9 @@ class PlaceResource(Resource):
         if not place:
             return {'error': 'Place not found'}, 404
         
+        # Get reviews for this place
+        reviews = facade.get_reviews_by_place(place_id) or []
+        
         return {
             'id': place.id,
             'title': place.title,
@@ -88,7 +86,23 @@ class PlaceResource(Resource):
             'latitude': place.latitude,
             'longitude': place.longitude,
             'owner_id': place.owner.id,
-            "amenities": [{"id": amenity.id, "name": amenity.name} for amenity in place.amenities]
+            'owner': {
+                'id': place.owner.id,
+                'first_name': place.owner.first_name,
+                'last_name': place.owner.last_name
+            },
+            'amenities': [{'id': amenity.id, 'name': amenity.name} for amenity in place.amenities],
+            'reviews': [{
+                'id': review.id,
+                'text': review.text,
+                'rating': review.rating,
+                'created_at': review.created_at.isoformat(),
+                'user': {
+                    'id': review.user.id,
+                    'first_name': review.user.first_name,
+                    'last_name': review.user.last_name
+                }
+            } for review in reviews]
         }, 200
 
     @api.expect(place_model)
@@ -152,7 +166,6 @@ class PlaceResource(Resource):
         
         return {'message': 'Place deleted successfully'}, 200
 
-
 @api.route('/<place_id>/reviews')
 class PlaceReviewListResource(Resource):
     @api.response(200, 'List of reviews for the place retrieved successfully')
@@ -168,7 +181,6 @@ class PlaceReviewListResource(Resource):
             'rating': review.rating,
             'user_id': review.user.id
         } for review in reviews], 200
-
 
 @api.route('/<place_id>/amenities')
 class PlaceAmenityListResource(Resource):
