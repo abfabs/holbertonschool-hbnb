@@ -2,7 +2,6 @@
 
 <h1 style="text-align:center;">HBnB Evolution - Airbnb Clone Project</h1>
 
-
 ## Table of Contents
 - [Objective](#objective)
 - [Project Status](#project-status)
@@ -10,6 +9,7 @@
 - [Technology Stack](#technology-stack)
 - [Project Structure](#project-structure)
 - [Installation & Setup](#installation--setup)
+- [Frontend Implementation](#frontend-implementation)
 - [API Documentation](#api-documentation)
 - [Database Schema](#database-schema)
 - [Package Diagram](#package-diagram)
@@ -37,17 +37,24 @@ It highlights clear separation of concerns, audit tracking, and maintainable, sc
 
 <h2 style="text-align:center;">Project Status</h2>
 
-**Current Phase**: Backend Development Complete ✅
+**Current Phase**: Full-Stack Application Complete ✅
 
+**Backend:**
 - ✅ REST API with Flask-RESTX fully implemented
 - ✅ SQLAlchemy ORM with MySQL database integration
 - ✅ Business logic layer with proper validation
 - ✅ Authentication system (JWT tokens)
 - ✅ Amenity management system
 - ✅ Review system with ratings
-- 🔄 **Frontend Development**: In Progress (React/Vue.js)
 
-The backend is production-ready with all CRUD operations, authentication, and error handling implemented.
+**Frontend:**
+- ✅ User authentication interface (Login page)
+- ✅ Dynamic places listing with price filtering
+- ✅ Detailed place view with amenities and reviews
+- ✅ Interactive review submission form
+- ✅ Responsive design with modern CSS
+
+The application is production-ready with complete frontend-backend integration, CRUD operations, authentication, and error handling implemented.
 
 ---
 
@@ -60,6 +67,7 @@ The backend is production-ready with all CRUD operations, authentication, and er
 - **Audit Trail**: Automatic creation/update timestamp tracking for all entities
 - **Authentication**: JWT-based token authentication for secure API access
 - **Authorization**: Role-based permissions (admin vs. regular users)
+- **Interactive Frontend**: Responsive web interface with dynamic content loading
 
 ---
 
@@ -74,6 +82,8 @@ The backend is production-ready with all CRUD operations, authentication, and er
 | **Password Security** | bcrypt |
 | **Language** | Python 3.x |
 | **API Documentation** | Swagger/OpenAPI (via Flask-RESTX) |
+| **Frontend** | HTML5, CSS3, JavaScript (Vanilla) |
+| **Cross-Origin Support** | Flask-CORS |
 
 ---
 
@@ -82,36 +92,44 @@ The backend is production-ready with all CRUD operations, authentication, and er
 ```
 hbnb/
 ├── app/
-│ ├── api/v1/ # Presentation Layer - API endpoints
-│ │ ├── users.py # User endpoints
-│ │ ├── places.py # Place endpoints
-│ │ ├── reviews.py # Review endpoints
-│ │ ├── amenities.py # Amenity endpoints
-│ │ └── auth.py # Authentication endpoints
-│ ├── models/ # Data models
-│ │ ├── basemodel.py # Base model with common attributes
-│ │ ├── user.py # User model
-│ │ ├── place.py # Place model
-│ │ ├── review.py # Review model
-│ │ ├── amenity.py # Amenity model
-│ │ └── placeamenity.py # Many-to-many relationship
-│ ├── services/ # Business Logic Layer
-│ │ └── facade.py # Facade pattern for business operations
-│ ├── persistence/ # Persistence Layer
-│ │ ├── repository.py # Base repository classes
-│ │ ├── userrepository.py # User repository
-│ │ ├── placerepository.py # Place repository
-│ │ ├── reviewrepository.py # Review repository
-│ │ └── amenityrepository.py # Amenity repository
-│ ├── database/ # Database setup and initialization
-│ │ ├── schema.sql # Database schema
-│ │ ├── initialdata.sql # Initial data
-│ │ └── setupdatabase.py # Setup script
-│ ├── extensions.py # Flask extensions (db, bcrypt, jwt)
-│ └── init.py # Flask app factory
-├── config.py # Configuration settings
-├── run.py # Application entry point
-├── requirements.txt # Python dependencies
+│   ├── api/v1/                 # Presentation Layer - API endpoints
+│   │   ├── users.py            # User endpoints
+│   │   ├── places.py           # Place endpoints
+│   │   ├── reviews.py          # Review endpoints
+│   │   ├── amenities.py        # Amenity endpoints
+│   │   └── auth.py             # Authentication endpoints
+│   ├── models/                 # Data models
+│   │   ├── basemodel.py        # Base model with common attributes
+│   │   ├── user.py             # User model
+│   │   ├── place.py            # Place model
+│   │   ├── review.py           # Review model
+│   │   ├── amenity.py          # Amenity model
+│   │   └── placeamenity.py     # Many-to-many relationship
+│   ├── services/               # Business Logic Layer
+│   │   └── facade.py           # Facade pattern for business operations
+│   ├── persistence/            # Persistence Layer
+│   │   ├── repository.py       # Base repository classes
+│   │   ├── userrepository.py   # User repository
+│   │   ├── placerepository.py  # Place repository
+│   │   ├── reviewrepository.py # Review repository
+│   │   └── amenityrepository.py # Amenity repository
+│   ├── database/               # Database setup and initialization
+│   │   ├── schema.sql          # Database schema
+│   │   ├── initialdata.sql     # Initial data
+│   │   └── setupdatabase.py    # Setup script
+│   ├── extensions.py           # Flask extensions (db, bcrypt, jwt)
+│   └── __init__.py             # Flask app factory
+├── front/                      # Frontend files
+│   ├── index.html              # Main places listing page
+│   ├── login.html              # User authentication page
+│   ├── place.html              # Place details page
+│   ├── addreview.html          # Review submission page (optional)
+│   ├── styles.css              # Application styling
+│   └── scripts.js              # Frontend JavaScript logic
+├── images/                     # Application images and diagrams
+├── config.py                   # Configuration settings
+├── run.py                      # Application entry point
+├── requirements.txt            # Python dependencies
 └── README.md
 ```
 
@@ -132,24 +150,25 @@ hbnb/
 - Python 3.8 or higher
 - MySQL 8.0 or higher
 - pip (Python package manager)
+- Modern web browser (Chrome, Firefox, Safari, or Edge)
 
 ### Step 1: Clone the Repository
 
-```
+```bash
 git clone https://github.com/abfabs/holbertonschool-hbnb.git
 cd holbertonschool-hbnb
 ```
 
 ### Step 2: Create a Virtual Environment
 
-```
+```bash
 python3 -m venv venv
-source venv/bin/activate # On Windows: venv\Scripts\activate
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 ```
 
 ### Step 3: Install Dependencies
 
-```
+```bash
 pip install -r requirements.txt
 ```
 
@@ -164,7 +183,7 @@ JWT_SECRET_KEY=your_secret_key_here
 ```
 
 ### Step 5: Set Up the Database
-```
+```bash
 python app/database/setupdatabase.py
 ```
 
@@ -174,12 +193,170 @@ This will:
 - Insert initial data (default amenities)
 
 ### Step 6: Run the Application
-```
+```bash
 python run.py
 ```
 
-The API will be available at `http://localhost:5000`
+The API will be available at `http://localhost:5000`  
 Swagger API documentation: `http://localhost:5000/doc/`
+
+### Step 7: Access the Frontend
+
+Open your web browser and navigate to the frontend:
+- **Home/Places Listing**: `http://localhost:5000/front/index.html` or serve via `python -m http.server 8000` from the `front/` directory
+- **Login Page**: `http://localhost:5000/front/login.html`
+- **Place Details**: Click "View Details" on any place card
+
+---
+
+<h2 style="text-align:center;">Frontend Implementation</h2>
+
+### Overview
+
+The frontend is built with vanilla HTML, CSS, and JavaScript, providing a responsive and interactive user experience. It communicates with the Flask backend API using JWT token-based authentication.
+
+### Key Features
+
+#### 1. User Authentication (Login)
+- **Page**: `login.html`
+- **Functionality**: Users can log in with their email and password to receive a JWT token stored in cookies
+- **API Endpoint**: `POST /api/v1/auth/login`
+- **Success**: Redirects to the places listing page with authentication enabled
+
+#### 2. Places Listing
+- **Page**: `index.html`
+- **Features**:
+  - Displays all available places dynamically fetched from the API
+  - Price filtering dropdown (All, Up to $10, Up to $50, Up to $100)
+  - Each place card shows title, price per night, and description preview
+  - "View Details" button for each place
+- **API Endpoint**: `GET /api/v1/places`
+- **Authentication**: Optional for viewing, but login link is shown for unauthenticated users
+
+#### 3. Place Details
+- **Page**: `place.html?id={place_id}`
+- **Features**:
+  - Detailed place information (title, price, description, location coordinates, host name)
+  - List of amenities associated with the place
+  - All reviews with ratings, user names, and timestamps
+  - Add review form (only visible for authenticated users)
+- **API Endpoints**: 
+  - `GET /api/v1/places/{place_id}` - Fetch place details
+  - Reviews included in place response
+
+#### 4. Review Submission
+- **Component**: Review form on `place.html`
+- **Features**:
+  - Rating selection (1-5 stars)
+  - Text review input
+  - Form validation
+  - Automatic page refresh after successful submission
+- **API Endpoint**: `POST /api/v1/reviews`
+- **Authentication**: Required (JWT token)
+
+### Frontend Architecture
+
+#### HTML Pages
+
+**`login.html`**
+- Simple login form with email and password fields
+- Form submission handled by JavaScript
+- Redirects to index page on success
+
+**`index.html`**
+- Header with logo and navigation (Home, Login/Logout button)
+- Filter section for price-based filtering
+- Dynamic places list populated via JavaScript
+- Footer with copyright information
+
+**`place.html`**
+- Detailed place information section
+- Amenities grid display
+- Reviews section with individual review cards
+- Conditional review submission form (authenticated users only)
+
+#### CSS Styling (`styles.css`)
+
+**Design Principles:**
+- Clean, modern interface with consistent color scheme
+- Primary brand color: `#5ec4b6` (teal)
+- Responsive grid layouts for places and amenities
+- Card-based design with hover effects
+- Mobile-responsive with media queries for screens under 768px
+
+**Key Style Components:**
+- **Header**: Fixed navigation with logo and login button
+- **Place Cards**: Grid layout with shadow effects and hover animations
+- **Forms**: Consistent input styling with rounded corners
+- **Buttons**: Primary action buttons in brand color with hover states
+- **Reviews**: Card-based layout with user info and timestamps
+
+#### JavaScript Logic (`scripts.js`)
+
+**Core Functions:**
+
+1. **Authentication Management**
+   - `loginUser(email, password)`: Handles login API call and token storage
+   - `checkAuthentication()`: Verifies token and adjusts UI accordingly
+   - `setCookie()` / `getCookie()`: Cookie management for JWT tokens
+
+2. **Places Operations**
+   - `fetchPlaces(token)`: Retrieves all places from API
+   - `displayPlaces(places)`: Dynamically renders place cards
+   - `loadPriceFilter()`: Populates and manages price filter dropdown
+   - `filterPlacesByPrice(maxPrice)`: Client-side filtering logic
+   - `viewPlaceDetails(placeId)`: Navigation to place details page
+
+3. **Place Details**
+   - `getPlaceIdFromURL()`: Extracts place ID from query parameters
+   - `fetchPlaceDetails(token, placeId)`: Retrieves detailed place information
+   - `displayPlaceDetails(place)`: Renders place info, amenities, and reviews
+   - `displayReviews(reviews)`: Creates review cards with ratings
+
+4. **Review Submission**
+   - `submitReview(token, placeId, rating, reviewText)`: Posts review to API
+   - Form validation and error handling
+   - Success feedback and page refresh
+
+### API Integration
+
+The frontend communicates with the backend using the Fetch API with the following pattern:
+
+```javascript
+// Example: Fetching places with authentication
+const response = await fetch('http://127.0.0.1:5000/api/v1/places', {
+    method: 'GET',
+    headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+    }
+});
+```
+
+**CORS Configuration**: The backend uses Flask-CORS to allow cross-origin requests from the frontend.
+
+### User Experience Flow
+
+1. **First-Time Visitor**:
+   - Lands on `index.html` → sees all places
+   - Can browse and filter places without logging in
+   - Click "View Details" to see place information
+   - Cannot submit reviews without authentication
+
+2. **Authenticated User**:
+   - Logs in via `login.html` → JWT token stored in cookies
+   - Redirected to `index.html` → login button hidden
+   - Can view place details with review form visible
+   - Can submit reviews with ratings and text
+   - Token automatically included in authenticated requests
+
+### Responsive Design
+
+The frontend is fully responsive with breakpoints at 768px:
+- **Desktop**: Multi-column grid layouts for places and amenities
+- **Mobile**: Single-column stacked layouts
+- **Header**: Collapses navigation on smaller screens
+- **Cards**: Full-width with adjusted padding
 
 ---
 
@@ -197,23 +374,23 @@ Authorization: Bearer <your_jwt_token>
 - **Endpoint**: `POST /api/v1/auth/login`
 - **Description**: Authenticate user and receive JWT token
 - **Request Body**:
-```
+```json
 {
-"email": "user@example.com",
-"password": "password123"
+  "email": "user@example.com",
+  "password": "password123"
 }
 ```
 - **Response** (200 OK):
-```
+```json
 {
-"access_token": "eyJ0eXAiOiJKV1QiLCJhbGc..."
+  "access_token": "eyJ0eXAiOiJKV1QiLCJhbGc..."
 }
 ```
 
 ### Users Endpoints
 
 | Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---|
+|--------|----------|-------------|---------------|
 | POST | `/api/v1/users` | Create new user (Admin only) | ✅ |
 | GET | `/api/v1/users` | List all users | ✅ |
 | GET | `/api/v1/users/<user_id>` | Get user details | ✅ |
@@ -222,7 +399,7 @@ Authorization: Bearer <your_jwt_token>
 ### Places Endpoints
 
 | Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---|
+|--------|----------|-------------|---------------|
 | POST | `/api/v1/places` | Create new place | ✅ |
 | GET | `/api/v1/places` | List all places | ❌ |
 | GET | `/api/v1/places/<place_id>` | Get place details | ❌ |
@@ -232,7 +409,7 @@ Authorization: Bearer <your_jwt_token>
 ### Reviews Endpoints
 
 | Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---|
+|--------|----------|-------------|---------------|
 | POST | `/api/v1/reviews` | Submit new review | ✅ |
 | GET | `/api/v1/reviews` | List all reviews | ❌ |
 | GET | `/api/v1/reviews/<review_id>` | Get review details | ❌ |
@@ -243,24 +420,24 @@ Authorization: Bearer <your_jwt_token>
 ### Amenities Endpoints
 
 | Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---|
+|--------|----------|-------------|---------------|
 | POST | `/api/v1/amenities` | Create amenity (Admin only) | ✅ |
 | GET | `/api/v1/amenities` | List all amenities | ❌ |
 | GET | `/api/v1/amenities/<amenity_id>` | Get amenity details | ❌ |
 | PUT | `/api/v1/amenities/<amenity_id>` | Update amenity (Admin only) | ✅ |
 
 #### Example: Create a Place
-```
-curl -X POST http://localhost:5000/api/v1/places
--H "Authorization: Bearer <token>"
--H "Content-Type: application/json"
--d '{
-"title": "Beautiful Beach House",
-"description": "Cozy beachfront property with ocean view",
-"price": 150.00,
-"latitude": 40.7128,
-"longitude": -74.0060
-}'
+```bash
+curl -X POST http://localhost:5000/api/v1/places \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Beautiful Beach House",
+    "description": "Cozy beachfront property with ocean view",
+    "price": 150.00,
+    "latitude": 40.7128,
+    "longitude": -74.0060
+  }'
 ```
 
 ---
@@ -269,56 +446,56 @@ curl -X POST http://localhost:5000/api/v1/places
 
 ```mermaid
 erDiagram
-USER ||--o{ PLACE : "owns"
-USER ||--o{ REVIEW : "writes"
-PLACE ||--o{ REVIEW : "receives"
-PLACE }o--|| AMENITY : "has"
+    USER ||--o{ PLACE : "owns"
+    USER ||--o{ REVIEW : "writes"
+    PLACE ||--o{ REVIEW : "receives"
+    PLACE }o--|| AMENITY : "has"
 
-USER {
-    string id PK "UUID"
-    string first_name
-    string last_name
-    string email UK "Unique"
-    string password
-    boolean is_admin
-    datetime created_at
-    datetime updated_at
-}
+    USER {
+        string id PK "UUID"
+        string first_name
+        string last_name
+        string email UK "Unique"
+        string password
+        boolean is_admin
+        datetime created_at
+        datetime updated_at
+    }
 
-PLACE {
-    string id PK "UUID"
-    string title
-    string description
-    float price
-    float latitude
-    float longitude
-    string owner_id FK "references USER.id"
-    datetime created_at
-    datetime updated_at
-}
+    PLACE {
+        string id PK "UUID"
+        string title
+        string description
+        float price
+        float latitude
+        float longitude
+        string owner_id FK "references USER.id"
+        datetime created_at
+        datetime updated_at
+    }
 
-REVIEW {
-    string id PK "UUID"
-    string text
-    int rating "1-5"
-    string user_id FK "references USER.id"
-    string place_id FK "references PLACE.id"
-    datetime created_at
-    datetime updated_at
-}
+    REVIEW {
+        string id PK "UUID"
+        string text
+        int rating "1-5"
+        string user_id FK "references USER.id"
+        string place_id FK "references PLACE.id"
+        datetime created_at
+        datetime updated_at
+    }
 
-AMENITY {
-    string id PK "UUID"
-    string name UK "Unique"
-    datetime created_at
-    datetime updated_at
-}
+    AMENITY {
+        string id PK "UUID"
+        string name UK "Unique"
+        datetime created_at
+        datetime updated_at
+    }
 
-PLACE_AMENITY {
-    string place_id FK "references PLACE.id"
-    string amenity_id FK "references AMENITY.id"
-    datetime created_at
-}
+    PLACE_AMENITY {
+        string place_id FK "references PLACE.id"
+        string amenity_id FK "references AMENITY.id"
+        datetime created_at
+    }
 ```
 
 **Key Tables**:
