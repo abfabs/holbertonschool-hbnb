@@ -127,7 +127,7 @@ main {
 }
 
 .place-card h3 {
-    color: #007bff;
+    color: #5ec4b6;
     margin-bottom: 0.5rem;
 }
 
@@ -138,7 +138,7 @@ main {
 
 /* Details Button */
 .details-button {
-    background-color: #28a745;
+    background-color: #5ec4b6;
     color: #fff;
     padding: 0.5rem 1rem;
     border: none;
@@ -150,11 +150,13 @@ main {
 }
 
 .details-button:hover {
-    background-color: #218838;
+    background-color: #5ec4b6;
 }
 
+/* ==================== TASK 3: PLACE DETAILS STYLES ==================== */
+
 /* Place Details */
-.place-details {
+#place-details {
     background-color: #fff;
     padding: 2rem;
     border-radius: 10px;
@@ -162,8 +164,8 @@ main {
     margin-bottom: 2rem;
 }
 
-.place-details h1 {
-    color: #007bff;
+#place-details h1 {
+    color: #5ec4b6;
     margin-bottom: 1rem;
 }
 
@@ -181,12 +183,59 @@ main {
     color: #333;
 }
 
-/* Reviews Section */
-#reviews {
-    margin: 2rem 0;
+.place-price {
+    font-size: 1.3em;
+    margin: 10px 0;
 }
 
-#reviews h2 {
+.place-description {
+    line-height: 1.6;
+    margin: 15px 0;
+}
+
+.place-location {
+    margin: 10px 0;
+}
+
+.place-host {
+    margin: 10px 0;
+}
+
+/* Amenities Section */
+.amenities-section {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+}
+
+.amenities-section h2 {
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.amenities-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+    list-style: none;
+    padding: 0;
+}
+
+.amenities-list li {
+    background: #f7f7f7;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+/* Reviews Section */
+.reviews-section {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+}
+
+.reviews-section h2 {
     color: #333;
     margin-bottom: 1rem;
 }
@@ -205,12 +254,28 @@ main {
     margin: 0.5rem 0;
 }
 
-.review-card strong {
-    color: #007bff;
+.review-user {
+    font-weight: bold;
+    color: #5ec4b6;
+}
+
+.review-rating {
+    color: #5ec4b6;
+    margin: 5px 0;
+}
+
+.review-text {
+    margin: 10px 0;
+    line-height: 1.5;
+}
+
+.review-date {
+    font-size: 0.9em;
+    color: #666;
 }
 
 /* Add Review Section */
-.add-review {
+#add-review {
     background-color: #fff;
     padding: 2rem;
     border-radius: 10px;
@@ -218,9 +283,44 @@ main {
     margin-top: 2rem;
 }
 
-.add-review h2 {
+#add-review h2 {
     color: #333;
     margin-bottom: 1rem;
+}
+
+#review-form label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+#review-form select,
+#review-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+#review-form textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+#review-form .submit-button {
+    margin-top: 15px;
+    padding: 10px 20px;
+    background: #5ec4b6;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+}
+
+#review-form .submit-button:hover {
+    background: #5ec4b6;
 }
 
 /* Form */
@@ -306,5 +406,9 @@ footer p {
 
     .place-card {
         margin: 10px 0;
+    }
+
+    .amenities-list {
+        grid-template-columns: 1fr;
     }
 }
